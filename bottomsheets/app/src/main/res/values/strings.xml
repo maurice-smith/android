@@ -3,4 +3,7 @@
     <string name="bottom_sheet_behaviour">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
     <string name="bottom_sheet_title_1">Persistent Bottom Sheet</string>
     <string name="bottom_sheet_title_2">Bottom Sheet Dialog</string>
+    <string name="bottom_sheet_dialog_button_text">Show Bottom Sheet Dialog</string>
+    <string name="sheet_content_title">My Bottom Sheet title</string>
+    <string name="expand">EXPAND</string>
 </resources>
