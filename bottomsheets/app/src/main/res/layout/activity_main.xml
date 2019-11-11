@@ -14,7 +14,7 @@
         tools:context=".MainActivity">
 
         <Button
-            android:id="@+id/hello_text"
+            android:id="@+id/show_bottom_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bottom_sheet_dialog_button_text"

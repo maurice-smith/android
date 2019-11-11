@@ -1,16 +1,19 @@
 package com.kingmo.example.bottomsheets
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var bottomDialogFragment: LeeRoyBottomDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         bottomSheetView.setOnClickListener {toggleBottomSheetOnClick()}
         expandButton.setOnClickListener {toggleBottomSheetOnClick()}
+
+        val show_bottom_dialog: Button = findViewById(R.id.show_bottom_dialog)
+        show_bottom_dialog.setOnClickListener { showBottomSheetDialogAsFragment() }
     }
 
     private fun toggleBottomSheetOnClick() {
@@ -32,6 +38,21 @@ class MainActivity : AppCompatActivity() {
         } else {
             bottomSheetBehavior.setState(STATE_COLLAPSED)
         }
+    }
+
+    private fun showBottomSheetDialogAsFragment() {
+        bottomDialogFragment = LeeRoyBottomDialogFragment.newInstance()
+        bottomDialogFragment?.show(supportFragmentManager, LeeRoyBottomDialogFragment.TAG)
+    }
+
+    /*
+    * can set custom view of BottomSheetDialog
+    */
+    private fun showBottomDialog() {
+        val dialogView: View = LayoutInflater.from(this).inflate(R.layout.fragment_sho_nuff_bottom_sheet_dialog, null, false)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(dialogView)
+        dialog.show()
     }
 
     class ShoNuffBottomSheetCallback: BottomSheetBehavior.BottomSheetCallback() {

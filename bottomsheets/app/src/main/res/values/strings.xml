@@ -7,4 +7,7 @@
     <string name="sheet_content_title">Sho\'Nuff Says</string>
     <string name="expand">EXPAND</string>
     <string name="hide">HIDE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
