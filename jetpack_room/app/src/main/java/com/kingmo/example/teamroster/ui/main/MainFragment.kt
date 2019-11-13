@@ -1,3 +1,4 @@
+
 package com.kingmo.example.teamroster.ui.main
 
 import androidx.lifecycle.ViewModelProviders
@@ -6,7 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.kingmo.example.teamroster.R
+import com.kingmo.example.teamroster.RosterApplication
+import com.kingmo.example.teamroster.database.RosterAppDatabase
 
 class MainFragment : Fragment() {
 
@@ -15,18 +19,25 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: PlayerViewModel
+    private lateinit var rootView: View
+    private lateinit var rosterDb: RosterAppDatabase
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        rosterDb = (activity?.applicationContext as RosterApplication).getAppDataBase()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        rootView = inflater.inflate(R.layout.main_fragment, container, false)
+        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
-        // TODO: Use the ViewModel
+        val appViewModelFactory: AppViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
+        viewModel = ViewModelProviders.of(this, appViewModelFactory).get(PlayerViewModel::class.java)
+
+        viewModel.getPlayers().observe(this, Observer { })
     }
 
 }
