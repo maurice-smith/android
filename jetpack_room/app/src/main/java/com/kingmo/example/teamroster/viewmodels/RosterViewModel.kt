@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.kingmo.example.teamroster.database.Player
 import com.kingmo.example.teamroster.database.PlayerDao
 
-class PlayerViewModel(private val playerDao: PlayerDao): ViewModel() {
+class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
 
     fun getPlayers(): LiveData<List<Player>> {
         return playerDao.getPlayers()

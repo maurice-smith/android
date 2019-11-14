@@ -1,7 +1,7 @@
 package com.kingmo.example.teamroster.ui.main
 
 import com.kingmo.example.teamroster.database.PlayerDao
-import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
+import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 import org.junit.After
 import org.junit.Before
 
@@ -13,19 +13,19 @@ import org.mockito.junit.MockitoJUnitRunner
 
 
 @RunWith(MockitoJUnitRunner::class)
-class PlayerViewModelTest {
+class RosterViewModelTest {
 //    @Rule
 //    val instantExecutorRule = InstantTaskExecutorRule()
 
     @Mock
     private lateinit var playerDao: PlayerDao
 
-    private lateinit var viewModel: PlayerViewModel
+    private lateinit var viewModel: RosterViewModel
 
     @Before
     fun setUp() {
         //`when`(playerDao.findPlayerById(any())).thenReturn()
-        viewModel = PlayerViewModel(playerDao)
+        viewModel = RosterViewModel(playerDao)
     }
 
     @After

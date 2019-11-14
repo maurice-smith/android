@@ -8,8 +8,8 @@ import com.kingmo.example.teamroster.database.PlayerDao
 class AppViewModelFactory(private val playerDao: PlayerDao): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
-            return PlayerViewModel(playerDao) as T
+        if (modelClass.isAssignableFrom(RosterViewModel::class.java)) {
+            return RosterViewModel(playerDao) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

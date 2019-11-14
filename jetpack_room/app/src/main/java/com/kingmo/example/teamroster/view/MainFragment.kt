@@ -12,7 +12,7 @@ import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
 import com.kingmo.example.teamroster.database.RosterAppDatabase
 import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
-import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
+import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 
 class MainFragment : Fragment() {
 
@@ -20,7 +20,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: PlayerViewModel
+    private lateinit var viewModel: RosterViewModel
     private lateinit var rootView: View
     private lateinit var rosterDb: RosterAppDatabase
 
@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val appViewModelFactory: AppViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
-        viewModel = ViewModelProviders.of(this, appViewModelFactory).get(PlayerViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
 
         viewModel.getPlayers().observe(this, Observer {
             //TODO
