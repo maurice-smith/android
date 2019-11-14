@@ -6,10 +6,12 @@ import androidx.room.*
 @Entity(tableName = "players")
 data class Player(
     @ColumnInfo(name = "player_id") @PrimaryKey val playerId: Int,
-    @ColumnInfo(name = "first_name") val firstName: String?,
-    @ColumnInfo(name = "last_name") val lastName: String?,
+    @ColumnInfo(name = "first_name") val firstName: String,
+    @ColumnInfo(name = "last_name") val lastName: String,
     @ColumnInfo(name = "jersey_number") val jerseyNumber: Int?,
-    val position: String?
+    val position: String?,
+    @ColumnInfo(name = "photo_url") val photoUrl: String?,
+    val bio: String?
 )
 
 @Dao
