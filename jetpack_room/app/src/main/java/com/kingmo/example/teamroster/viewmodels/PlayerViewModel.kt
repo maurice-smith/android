@@ -1,4 +1,4 @@
-package com.kingmo.example.teamroster.ui.main
+package com.kingmo.example.teamroster.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

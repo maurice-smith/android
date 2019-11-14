@@ -1,15 +1,11 @@
 package com.kingmo.example.teamroster.ui.main
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import com.kingmo.example.teamroster.database.Player
 import com.kingmo.example.teamroster.database.PlayerDao
+import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
 import org.junit.After
 import org.junit.Before
 
-import org.junit.Assert.*
 import org.mockito.Mock
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*

@@ -1,5 +1,5 @@
 
-package com.kingmo.example.teamroster.ui.main
+package com.kingmo.example.teamroster.view
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
 import com.kingmo.example.teamroster.database.RosterAppDatabase
+import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
+import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
 
 class MainFragment : Fragment() {
 
@@ -37,7 +39,9 @@ class MainFragment : Fragment() {
         val appViewModelFactory: AppViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
         viewModel = ViewModelProviders.of(this, appViewModelFactory).get(PlayerViewModel::class.java)
 
-        viewModel.getPlayers().observe(this, Observer { })
+        viewModel.getPlayers().observe(this, Observer {
+            //TODO
+        })
     }
 
 }

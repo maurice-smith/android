@@ -2,7 +2,7 @@ package com.kingmo.example.teamroster
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kingmo.example.teamroster.ui.main.MainFragment
+import com.kingmo.example.teamroster.view.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
