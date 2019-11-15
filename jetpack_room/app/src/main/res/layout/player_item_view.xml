@@ -1,73 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/player_card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/player_info_container"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="playerViewModel"
+            type="com.kingmo.example.teamroster.viewmodels.PlayerViewModel" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/player_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/player_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="player img"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars[4]" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/player_info_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/player_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="player img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars[4]" />
 
-        <TextView
-            android:id="@+id/player_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toEndOf="@id/player_img"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Chris B. Duncan"/>
+            <TextView
+                android:id="@+id/player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:text=""
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toEndOf="@id/player_img"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Chris B. Duncan"/>
 
-        <TextView
-            android:id="@+id/player_position"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Position: Fullback"
-            app:layout_constraintTop_toBottomOf="@id/player_name"
-            app:layout_constraintStart_toEndOf="@id/player_img"/>
+            <TextView
+                android:id="@+id/player_position"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Position: Fullback"
+                app:layout_constraintTop_toBottomOf="@id/player_name"
+                app:layout_constraintStart_toEndOf="@id/player_img"/>
 
-        <TextView
-            android:id="@+id/jersey"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Jersey: #15"
-            app:layout_constraintTop_toBottomOf="@id/player_position"
-            app:layout_constraintStart_toEndOf="@id/player_img"/>
+            <TextView
+                android:id="@+id/jersey"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Jersey: #15"
+                app:layout_constraintTop_toBottomOf="@id/player_position"
+                app:layout_constraintStart_toEndOf="@id/player_img"/>
 
 
-        <TextView
-            android:id="@+id/bio_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:paddingBottom="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/player_img"
-            tools:text="Player Bio dfamldmfalf fsladmfa lffsafla nfdlfan\nlfsnl fnslfsasfs" />
+            <TextView
+                android:id="@+id/bio_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:paddingBottom="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/player_img"
+                tools:text="Player Bio dfamldmfalf fsladmfa lffsafla nfdlfan\nlfsnl fnslfsasfs" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
