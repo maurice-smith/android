@@ -41,15 +41,13 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val appViewModelFactory: AppViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
+        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
         val rosterList: RecyclerView = rootView.findViewById(R.id.roster_list)
         rosterList.layoutManager = LinearLayoutManager(context)
         playersRecyclerAdapter = PlayersRecyclerAdapter(mutableListOf())
 
         viewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
-
         viewModel.getPlayers().observe(this, Observer {playersRecyclerAdapter.updateViewModels(it)})
-
         viewModel.getError().observe(this, Observer { Log.e("**ERROR", it.errorMessage) })
     }
 

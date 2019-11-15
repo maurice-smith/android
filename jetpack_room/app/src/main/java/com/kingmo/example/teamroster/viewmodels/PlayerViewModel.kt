@@ -31,5 +31,5 @@ class PlayerViewModel(private val player: Player): AdapterItemViewModel, ViewMod
 
     override fun getBindingVariable(): Int = BR.playerViewModel
 
-    private fun getVisibilityForStringProperty(stringArg: String?) = if (stringArg?.trim()?.length ?: 0 > 0) View.VISIBLE else View.GONE
+    private fun getVisibilityForStringProperty(stringArg: String?) = if (!stringArg?.trim().isNullOrEmpty()) View.VISIBLE else View.GONE
 }

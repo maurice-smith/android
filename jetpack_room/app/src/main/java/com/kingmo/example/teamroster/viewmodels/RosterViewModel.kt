@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kingmo.example.teamroster.database.Player
 import com.kingmo.example.teamroster.database.PlayerDao
-import io.reactivex.FlowableSubscriber
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
-import org.reactivestreams.Subscription
+import com.kingmo.example.teamroster.models.BaseFlowableSubscriber
+import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 
 class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
     val errorMessage: MutableLiveData<ErrorViewModel> = MutableLiveData()
@@ -21,7 +19,7 @@ class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
             }
 
             override fun onError(error: Throwable?) {
-                errorMessage.postValue(ErrorViewModel(if (error?.message == null) "" else error.message!!))
+                errorMessage.postValue(ErrorViewModel(if (!error?.message?.trim().isNullOrEmpty()) error?.message!! else DEFAULT_ERROR_MSG))
             }
         })
         return viewModelsLiveData
@@ -38,38 +36,3 @@ class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
     fun getError(): MutableLiveData<ErrorViewModel> = errorMessage
 }
 
-abstract class BaseObserver<T>: Observer<T> {
-    override fun onComplete() {
-        //no-op
-    }
-
-    override fun onSubscribe(d: Disposable) {
-        //no-op
-    }
-
-    override fun onNext(result: T) {
-        //no-op
-    }
-
-    override fun onError(error: Throwable) {
-        //no-op
-    }
-}
-
-abstract class BaseFlowableSubscriber<T>: FlowableSubscriber<T> {
-    override fun onComplete() {
-        //no-op
-    }
-
-    override fun onSubscribe(s: Subscription) {
-        //no-op
-    }
-
-    override fun onNext(result: T) {
-        //no-op
-    }
-
-    override fun onError(error: Throwable?) {
-        //no-op
-    }
-}
