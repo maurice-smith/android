@@ -7,7 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerAdapter(
-    private val itemViewModelList: List<AdapterItemViewModel>,
+    protected var itemViewModelList: List<AdapterItemViewModel>,
     private val itemClickListener: ItemClickListener?
 ) : RecyclerView.Adapter<BaseRecyclerAdapter.BaseViewHolder>() {
 

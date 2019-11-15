@@ -3,4 +3,6 @@
     <string name="player_name_format">%1$s %2$s</string>
     <string name="roster_position_format">Position: %1$s</string>
     <string name="jersey_format">Wearing #: %1$s</string>
+    <string name="roster_title">West Side Walkers</string>
+    <string name="add_player_txt">Add Player</string>
 </resources>

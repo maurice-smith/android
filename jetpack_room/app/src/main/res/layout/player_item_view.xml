@@ -71,7 +71,6 @@
                 android:id="@+id/bio_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"
                 android:text="@{playerViewModel.playerBio}"
@@ -79,6 +78,7 @@
                 android:paddingBottom="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/player_img"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Player Bio dfamldmfalf fsladmfa lffsafla nfdlfan\nlfsnl fnslfsasfs" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package com.kingmo.example.teamroster.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Single
 
 @Entity(tableName = "players")
 data class Player(
@@ -17,10 +19,10 @@ data class Player(
 @Dao
 interface PlayerDao {
     @Query("SELECT * FROM players")
-    fun getPlayers(): LiveData<List<Player>>
+    fun getPlayers(): Flowable<List<Player>>
 
     @Query("SELECT * FROM players WHERE player_id = :playerId LIMIT 1")
-    fun findPlayerById(playerId: Int): LiveData<Player>
+    fun findPlayerById(playerId: Int): Flowable<Player>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg player: Player)
