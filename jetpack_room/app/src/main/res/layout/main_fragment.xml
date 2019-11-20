@@ -7,6 +7,14 @@
         <variable
             name="rosterHandler"
             type="com.kingmo.example.teamroster.view.RosterHandler" />
+
+        <variable
+            name="errorViewModel"
+            type="com.kingmo.example.teamroster.viewmodels.ErrorViewModel" />
+
+        <variable
+            name="rosterViewModel"
+            type="com.kingmo.example.teamroster.viewmodels.RosterViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -42,9 +50,35 @@
                 android:id="@+id/roster_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{rosterViewModel.playerRosterVisibility}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/player_item_view" />
+
+            <TextView
+                android:id="@+id/error_message_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:text="@{errorViewModel.errorMessage}"
+                android:visibility="@{errorViewModel.errorVisibility}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="ERROR TEXT"/>
+
+            <TextView
+                android:id="@+id/no_players_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:text="@string/no_players_found_msg"
+                android:visibility="@{rosterViewModel.noPlayersFoundVisibility}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button

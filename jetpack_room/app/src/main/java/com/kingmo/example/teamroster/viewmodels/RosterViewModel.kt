@@ -1,5 +1,6 @@
 package com.kingmo.example.teamroster.viewmodels
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,17 +10,26 @@ import com.kingmo.example.teamroster.models.BaseFlowableSubscriber
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 
 class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
-    val errorMessage: MutableLiveData<ErrorViewModel> = MutableLiveData()
+    val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    val errorViewModel: ErrorViewModel = ErrorViewModel()
 
     fun getPlayers(): LiveData<List<PlayerViewModel>> {
         val viewModelsLiveData: MutableLiveData<List<PlayerViewModel>> = MutableLiveData()
         playerDao.getPlayers().subscribe(object : BaseFlowableSubscriber<List<Player>>() {
             override fun onNext(result: List<Player>) {
-                viewModelsLiveData.postValue(result.map { PlayerViewModel(it) })
+                if (result.isNotEmpty()) {
+                    playerRosterVisibility.postValue(View.GONE)
+                    noPlayersFoundVisibility.postValue(View.VISIBLE)
+                } else {
+                    viewModelsLiveData.postValue(result.map { PlayerViewModel(it) })
+                    playerRosterVisibility.postValue(View.VISIBLE)
+                    noPlayersFoundVisibility.postValue(View.GONE)
+                }
             }
 
             override fun onError(error: Throwable?) {
-                errorMessage.postValue(ErrorViewModel(if (!error?.message?.trim().isNullOrEmpty()) error?.message!! else DEFAULT_ERROR_MSG))
+                errorViewModel.message = if (!error?.message?.trim().isNullOrEmpty()) error?.message!! else DEFAULT_ERROR_MSG
             }
         })
         return viewModelsLiveData
@@ -32,8 +42,6 @@ class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
     fun removePlayer(playerToRemove: PlayerViewModel) {
         playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
     }
-
-    fun getError(): MutableLiveData<ErrorViewModel> = errorMessage
 
     private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
         firstName = playerViewModel.getFirstName(),

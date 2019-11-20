@@ -1,15 +1,15 @@
 
 package com.kingmo.example.teamroster.view
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kingmo.example.teamroster.R
@@ -27,7 +27,7 @@ class MainFragment : Fragment(), RosterClickListener {
         val TAG: String = MainFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: RosterViewModel
+    private lateinit var rosterViewModel: RosterViewModel
     private lateinit var rosterDb: RosterAppDatabase
     private lateinit var playersRecyclerAdapter: PlayersRecyclerAdapter
     private lateinit var fragBinding: MainFragmentBinding
@@ -39,7 +39,6 @@ class MainFragment : Fragment(), RosterClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragBinding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
-
         return fragBinding.root
     }
 
@@ -52,9 +51,8 @@ class MainFragment : Fragment(), RosterClickListener {
         rosterList.layoutManager = LinearLayoutManager(context)
         playersRecyclerAdapter = PlayersRecyclerAdapter(mutableListOf())
 
-        viewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
-        viewModel.getPlayers().observe(this, Observer {playersRecyclerAdapter.updateViewModels(it)})
-        viewModel.getError().observe(this, Observer { Log.e(TAG, it.errorMessage) })
+        rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
+        rosterViewModel.getPlayers().observe(this, Observer {playersRecyclerAdapter.updateViewModels(it)})
     }
 
     override fun onAddPlayerClick() {

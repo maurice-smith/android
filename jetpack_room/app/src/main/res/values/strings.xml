@@ -5,4 +5,5 @@
     <string name="jersey_format">Wearing #: %1$s</string>
     <string name="roster_title">West Side Walkers</string>
     <string name="add_player_txt">Add Player</string>
+    <string name="no_players_found_msg">NO PLAYERS FOUND. CLICK ADD PLAYERS.</string>
 </resources>
