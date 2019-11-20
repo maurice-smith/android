@@ -8,7 +8,7 @@ import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.models.BaseFlowableSubscriber
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 
-class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
+class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
     val errorMessage: MutableLiveData<ErrorViewModel> = MutableLiveData()
 
     fun getPlayers(): LiveData<List<PlayerViewModel>> {
@@ -25,14 +25,22 @@ class RosterViewModel(private val playerDao: PlayerDao): ViewModel() {
         return viewModelsLiveData
     }
 
-    fun addPlayer(playerToAdd: Player) {
-        playerDao.insert(playerToAdd)
+    fun addPlayer(playerToAdd: PlayerViewModel) {
+        playerDao.insert(convertPlayerViewModelToPlayerObject(playerToAdd))
     }
 
-    fun removePlayer(playerToRemove: Player) {
-        playerDao.delete(playerToRemove)
+    fun removePlayer(playerToRemove: PlayerViewModel) {
+        playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
     }
 
     fun getError(): MutableLiveData<ErrorViewModel> = errorMessage
+
+    private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
+        firstName = playerViewModel.getFirstName(),
+        lastName = playerViewModel.getLastName(),
+        jerseyNumber = playerViewModel.getJerseyNumber(),
+        position = playerViewModel.getRosterPosition(),
+        bio = playerViewModel.getPlayerBio()
+    )
 }
 

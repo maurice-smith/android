@@ -1,19 +1,18 @@
 package com.kingmo.example.teamroster.database
 
 import androidx.room.*
+import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.Single
 
 @Entity(tableName = "players")
 data class Player(
-    @ColumnInfo(name = "player_id") @PrimaryKey val playerId: Int,
-    @ColumnInfo(name = "first_name") val firstName: String,
-    @ColumnInfo(name = "last_name") val lastName: String,
-    @ColumnInfo(name = "jersey_number") val jerseyNumber: String?,
-    val position: String,
-    @ColumnInfo(name = "photo_url") val photoUrl: String?,
-    val bio: String?
+    @ColumnInfo(name = "player_id") @PrimaryKey var playerId: Int = 0,
+    @ColumnInfo(name = "first_name") var firstName: String = EMPTY_STRING,
+    @ColumnInfo(name = "last_name") var lastName: String = EMPTY_STRING,
+    @ColumnInfo(name = "jersey_number") var jerseyNumber: String? = EMPTY_STRING,
+    var position: String = EMPTY_STRING,
+    @ColumnInfo(name = "photo_url") var photoUrl: String? = EMPTY_STRING,
+    var bio: String? = EMPTY_STRING
 )
 
 @Dao
