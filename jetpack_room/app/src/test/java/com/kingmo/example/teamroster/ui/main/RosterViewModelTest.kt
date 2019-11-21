@@ -36,7 +36,7 @@ class RosterViewModelTest {
 
     @Test
     fun shouldInvokeGetPlayers() {
-        viewModel.getPlayers()
+        viewModel.loadPlayers()
 
         verify(playerDao).getPlayers()
     }

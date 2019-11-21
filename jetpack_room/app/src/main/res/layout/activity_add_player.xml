@@ -1,129 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="addHandler"
+            type="com.kingmo.example.teamroster.view.AddPlayerHandler" />
+
+        <variable
+            name="playerFormViewModel"
+            type="com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel" />
+    </data>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".AddPlayerActivity">
-
-        <TextView
-            android:id="@+id/add_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/enter_player_info"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/first_name_input_container"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_title">
+            tools:context=".AddPlayerActivity">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/first_name_input"
+            <TextView
+                android:id="@+id/add_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/enter_player_info"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/first_name_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/first_name_hint"
-                android:inputType="textPersonName"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_title">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/last_name_input_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/first_name_input_container">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name_hint"
+                    android:inputType="textPersonName"
+                    android:text="@={playerFormViewModel.firstName}"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/last_name_input"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_input_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/last_name_hint"
-                android:inputType="textPersonName"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/first_name_input_container">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/jersey_input_container"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/last_name_input_container"
-            app:layout_constraintEnd_toStartOf="@+id/player_position_input_container">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/last_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name_hint"
+                    android:inputType="textPersonName"
+                    android:text="@={playerFormViewModel.lastName}"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/jersey_input"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/jersey_input_container"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/last_name_input_container"
+                app:layout_constraintEnd_toStartOf="@+id/player_position_input_container">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/jersey_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/jersey_hint"
+                    android:inputType="number"
+                    android:text="@={playerFormViewModel.jerseyNumber}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/player_position_input_container"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/last_name_input_container"
+                app:layout_constraintStart_toEndOf="@id/jersey_input_container">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/position_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/position_hint"
+                    android:inputType="text"
+                    android:text="@={playerFormViewModel.position}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/bio_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/jersey_hint"
-                android:inputType="number"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/player_position_input_container"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/last_name_input_container"
-            app:layout_constraintStart_toEndOf="@id/jersey_input_container">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/position_input"
-                android:layout_width="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:inputType="textMultiLine"
+                android:hint="@string/bio_hint"
+                android:maxLength="150"
+                android:maxLines="6"
+                android:lines="6"
+                android:scrollbars="none"
+                style="@style/Widget.AppCompat.EditText"
+                android:text="@={playerFormViewModel.playerBio}"
+                app:layout_constraintTop_toBottomOf="@id/player_position_input_container"
+                app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/add_player"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/position_hint"
-                android:inputType="text"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
-            android:id="@+id/bio_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            android:inputType="textMultiLine"
-            android:hint="@string/bio_hint"
-            android:maxLength="150"
-            android:maxLines="6"
-            android:lines="6"
-            android:scrollbars="none"
-            style="@style/Widget.AppCompat.EditText"
-            app:layout_constraintTop_toBottomOf="@id/player_position_input_container"
-            app:layout_constraintStart_toStartOf="parent" />
-        <Button
-            android:id="@+id/add_player"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/add_player_txt"
-            android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@id/bio_input"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/add_player_txt"
+                android:textSize="24sp"
+                android:onClick="@{view -> addHandler.addPlayer()}"
+                app:layout_constraintTop_toBottomOf="@id/bio_input"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

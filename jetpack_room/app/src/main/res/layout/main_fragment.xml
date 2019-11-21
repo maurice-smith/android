@@ -9,10 +9,6 @@
             type="com.kingmo.example.teamroster.view.RosterHandler" />
 
         <variable
-            name="errorViewModel"
-            type="com.kingmo.example.teamroster.viewmodels.ErrorViewModel" />
-
-        <variable
             name="rosterViewModel"
             type="com.kingmo.example.teamroster.viewmodels.RosterViewModel" />
     </data>
@@ -60,8 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="30sp"
-                android:text="@{errorViewModel.errorMessage}"
-                android:visibility="@{errorViewModel.errorVisibility}"
+                android:text="@{rosterViewModel.errorViewModel.message}"
+                android:visibility="@{rosterViewModel.errorViewModel.errorVisibility}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

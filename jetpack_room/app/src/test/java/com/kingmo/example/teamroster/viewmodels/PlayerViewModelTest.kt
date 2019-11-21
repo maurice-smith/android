@@ -28,7 +28,7 @@ class PlayerViewModelTest {
     fun shouldReturnViewModelVisibilitiesGone() {
         assertVisibilitiesGone(playerViewModel.getJerseyNumberVisibility())
         assertVisibilitiesGone(playerViewModel.getBioVisibility())
-        assertVisibilitiesGone(playerViewModel.getPlayerPhotoVisibility())
+        assertEquals(View.INVISIBLE, playerViewModel.getPlayerPhotoVisibility())
     }
 
     @Test

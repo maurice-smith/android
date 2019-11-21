@@ -3,7 +3,6 @@ package com.kingmo.example.teamroster.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,24 +36,32 @@ class MainFragment : Fragment(), RosterClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rosterDb = (activity?.applicationContext as RosterApplication).getAppDataBase()
+        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
+        rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragBinding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
+        fragBinding.setLifecycleOwner { this.lifecycle }
         return fragBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         fragBinding.rosterHandler = RosterHandler(this)
+        fragBinding.rosterViewModel = rosterViewModel
 
-        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
+
         val rosterList: RecyclerView = fragBinding.rosterList
         rosterList.layoutManager = LinearLayoutManager(context)
         playersRecyclerAdapter = PlayersRecyclerAdapter(mutableListOf())
+        rosterList.adapter = playersRecyclerAdapter
 
-        rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
-        rosterViewModel.getPlayers().observe(this, Observer {playersRecyclerAdapter.updateViewModels(it)})
+        rosterViewModel.playersLiveData.observe(this, Observer {
+            (rosterList.adapter as PlayersRecyclerAdapter).updateViewModels(it)
+        })
+
+        rosterViewModel.loadPlayers()
     }
 
     override fun onAddPlayerClick() {

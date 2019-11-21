@@ -25,7 +25,7 @@ class PlayerViewModel(private val player: Player): AdapterItemViewModel, ViewMod
 
     fun getPlayerPhotoUrl(): String? = player.photoUrl
 
-    fun getPlayerPhotoVisibility(): Int = getVisibilityForStringProperty(player.photoUrl)
+    fun getPlayerPhotoVisibility(): Int = if (!player.photoUrl?.trim().isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
 
     override fun getLayoutResId(): Int = R.layout.player_item_view
 

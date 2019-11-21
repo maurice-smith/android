@@ -1,5 +1,6 @@
 package com.kingmo.example.teamroster.models
 
+import io.reactivex.CompletableObserver
 import io.reactivex.FlowableSubscriber
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -37,6 +38,20 @@ abstract class BaseFlowableSubscriber<T>: FlowableSubscriber<T> {
     }
 
     override fun onError(error: Throwable?) {
+        //no-op
+    }
+}
+
+abstract class BaseCompletableObserver: CompletableObserver {
+    override fun onComplete() {
+        //no-op
+    }
+
+    override fun onSubscribe(disposable: Disposable) {
+        //no-op
+    }
+
+    override fun onError(error: Throwable) {
         //no-op
     }
 }

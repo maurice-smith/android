@@ -23,6 +23,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="player img"
+                android:visibility="@{playerViewModel.playerPhotoVisibility}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars[4]" />
@@ -34,7 +35,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="@{@string/jersey_format(playerViewModel.firstName, playerViewModel.lastName)}"
+                android:text="@{@string/player_name_format(playerViewModel.firstName, playerViewModel.lastName)}"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toEndOf="@id/player_img"
@@ -77,7 +78,7 @@
                 android:visibility="@{playerViewModel.bioVisibility}"
                 android:paddingBottom="12dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/player_img"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Player Bio dfamldmfalf fsladmfa lffsafla nfdlfan\nlfsnl fnslfsasfs" />
 

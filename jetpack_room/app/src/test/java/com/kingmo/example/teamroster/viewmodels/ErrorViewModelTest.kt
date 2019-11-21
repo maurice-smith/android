@@ -20,18 +20,18 @@ class ErrorViewModelTest {
     @Test
     fun shouldReturnMessageVisible() {
         errorViewModel.message = "Error"
-        assertEquals(View.VISIBLE, errorViewModel.errorVisibility.value)
+        assertEquals(View.VISIBLE, errorViewModel.errorVisibility)
     }
 
     @Test
     fun shouldReturnMessageGone() {
         errorViewModel.message = EMPTY_STRING
-        assertEquals(View.GONE, errorViewModel.errorVisibility.value)
+        assertEquals(View.GONE, errorViewModel.errorVisibility)
     }
 
     @Test
     fun shouldReturnErrorMessage() {
         errorViewModel.message = "Error"
-        assertEquals("Error", errorViewModel.errorMessage.value)
+        assertEquals("Error", errorViewModel.message)
     }
 }
