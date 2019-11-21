@@ -1,6 +1,7 @@
 
 package com.kingmo.example.teamroster.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kingmo.example.teamroster.AddPlayerActivity
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
 import com.kingmo.example.teamroster.database.RosterAppDatabase
@@ -56,6 +58,6 @@ class MainFragment : Fragment(), RosterClickListener {
     }
 
     override fun onAddPlayerClick() {
-        Log.d(TAG, "onAddPlayerClick - CLICKED")
+        startActivity(Intent(activity, AddPlayerActivity::class.java))
     }
 }
