@@ -18,15 +18,15 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/player_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
+                android:src="@drawable/img_place_holder"
                 android:contentDescription="player img"
                 android:visibility="@{playerViewModel.playerPhotoVisibility}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars[4]" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/player_name"
@@ -78,7 +78,7 @@
                 android:visibility="@{playerViewModel.bioVisibility}"
                 android:paddingBottom="12dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/player_img"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Player Bio dfamldmfalf fsladmfa lffsafla nfdlfan\nlfsnl fnslfsasfs" />
 

@@ -50,6 +50,7 @@ class PlayerViewModelTest {
         assertEquals("LF", playerViewModel.getRosterPosition())
         assertEquals("/img.png", playerViewModel.getPlayerPhotoUrl())
         assertEquals("Bio Text", playerViewModel.getPlayerBio())
+        assertEquals(123, playerViewModel.getPlayerId())
     }
 
     @Test

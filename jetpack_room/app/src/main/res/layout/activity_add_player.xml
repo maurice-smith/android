@@ -128,6 +128,26 @@
                 android:text="@={playerFormViewModel.playerBio}"
                 app:layout_constraintTop_toBottomOf="@id/player_position_input_container"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/photo_url_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bio_input">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/photo_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/photo_url_hint"
+                    android:inputType="text"
+                    android:text="@={playerFormViewModel.profileUrl}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/add_player"
                 android:layout_width="wrap_content"
@@ -138,7 +158,7 @@
                 android:text="@string/add_player_txt"
                 android:textSize="24sp"
                 android:onClick="@{view -> addHandler.addPlayer()}"
-                app:layout_constraintTop_toBottomOf="@id/bio_input"
+                app:layout_constraintTop_toBottomOf="@id/photo_url_input_container"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

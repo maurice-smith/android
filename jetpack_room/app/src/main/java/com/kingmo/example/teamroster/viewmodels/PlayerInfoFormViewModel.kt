@@ -9,4 +9,5 @@ class PlayerInfoFormViewModel: BaseObservable() {
     var position: String = EMPTY_STRING
     var jerseyNumber: String = EMPTY_STRING
     var playerBio: String = EMPTY_STRING
+    var profileUrl: String = EMPTY_STRING
 }

@@ -8,8 +8,7 @@ import io.reactivex.Observable
 
 @Entity(tableName = "players")
 data class Player(
-    // TODO: update & migrate @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "player_id") @PrimaryKey var playerId: Int = 0,
+    @ColumnInfo(name = "player_id") @PrimaryKey(autoGenerate = true) var playerId: Int = 0,
     @ColumnInfo(name = "first_name") var firstName: String = EMPTY_STRING,
     @ColumnInfo(name = "last_name") var lastName: String = EMPTY_STRING,
     @ColumnInfo(name = "jersey_number") var jerseyNumber: String? = EMPTY_STRING,

@@ -12,4 +12,5 @@
     <string name="jersey_hint">Jersey #</string>
     <string name="bio_hint">Enter Player Bio</string>
     <string name="position_hint">Player Position</string>
+    <string name="photo_url_hint">Profile Photo Url</string>
 </resources>

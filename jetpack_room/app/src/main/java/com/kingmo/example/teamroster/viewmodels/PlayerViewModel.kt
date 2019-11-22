@@ -9,6 +9,8 @@ import com.kingmo.example.teamroster.view.adapters.AdapterItemViewModel
 
 class PlayerViewModel(private val player: Player): AdapterItemViewModel, ViewModel() {
 
+    fun getPlayerId(): Int = player.playerId
+
     fun getPlayerBio(): String? = player.bio
 
     fun getBioVisibility(): Int = getVisibilityForStringProperty(player.bio)

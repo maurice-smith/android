@@ -74,7 +74,8 @@ class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
         lastName = playerInfoForm.lastName,
         jerseyNumber = playerInfoForm.jerseyNumber,
         position = playerInfoForm.position,
-        bio = playerInfoForm.playerBio
+        bio = playerInfoForm.playerBio,
+        photoUrl = playerInfoForm.profileUrl
     )
 }
 
