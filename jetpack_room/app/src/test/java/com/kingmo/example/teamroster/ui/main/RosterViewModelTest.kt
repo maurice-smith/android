@@ -2,6 +2,7 @@ package com.kingmo.example.teamroster.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.kingmo.example.teamroster.database.PlayerDao
+import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 import org.junit.After
 import org.junit.Before
@@ -27,7 +28,7 @@ class RosterViewModelTest {
     @Before
     fun setUp() {
         //`when`(playerDao.findPlayerById(any())).thenReturn()
-        viewModel = RosterViewModel(playerDao)
+        viewModel = RosterViewModel(playerDao, TestSchedulerProvider())
     }
 
     @After

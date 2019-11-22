@@ -8,11 +8,12 @@ import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
+import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
 import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
+class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProvider: SchedulerProvider) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
@@ -59,9 +60,20 @@ class RosterViewModel(private val playerDao: PlayerDao) : ViewModel() {
 
     fun removePlayer(playerToRemove: PlayerViewModel) {
         playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(object : BaseCompletableObserver() {
+
+                override fun onError(error: Throwable) {
+                    val addErrorViewModel = ErrorViewModel()
+                    addErrorViewModel.message = if (!error.message?.trim().isNullOrEmpty()) error.message!! else DEFAULT_ERROR_MSG
+                    errorViewModel.postValue(addErrorViewModel)
+                }
+            })
     }
 
     private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
+        playerId =  playerViewModel.getPlayerId(),
         firstName = playerViewModel.getFirstName(),
         lastName = playerViewModel.getLastName(),
         jerseyNumber = playerViewModel.getJerseyNumber(),

@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.kingmo.example.teamroster.database.RosterAppDatabase
 import com.kingmo.example.teamroster.databinding.ActivityAddPlayerBinding
+import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
 import com.kingmo.example.teamroster.view.AddPlayerHandler
 import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
 import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
@@ -31,7 +32,7 @@ class AddPlayerActivity : AppCompatActivity(), AddPlayerInfoClickListener {
         setContentView(activityBinding.root)
 
         rosterDb = (applicationContext as RosterApplication).getAppDataBase()
-        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao())
+        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
         rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
 
         activityBinding.playerFormViewModel = PlayerInfoFormViewModel()

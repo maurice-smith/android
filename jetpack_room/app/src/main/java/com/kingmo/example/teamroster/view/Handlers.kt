@@ -2,6 +2,7 @@ package com.kingmo.example.teamroster.view
 
 interface RosterClickListener {
     fun onAddPlayerClick()
+    fun onPlayerRemoved()
 }
 
 interface AddPlayerInfoClickListener {

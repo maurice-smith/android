@@ -6,6 +6,8 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 
+//https://via.placeholder.com/150.png/FF0000/000000?text=Profile+Image
+
 @Entity(tableName = "players")
 data class Player(
     @ColumnInfo(name = "player_id") @PrimaryKey(autoGenerate = true) var playerId: Int = 0,
@@ -32,5 +34,5 @@ interface PlayerDao {
     fun updatePlayers(vararg players: Player)
 
     @Delete
-    fun delete(user: Player)
+    fun delete(user: Player): Completable
 }
