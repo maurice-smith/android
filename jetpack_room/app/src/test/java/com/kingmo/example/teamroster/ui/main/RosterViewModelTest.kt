@@ -4,6 +4,8 @@ import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.kingmo.example.teamroster.database.Player
 import com.kingmo.example.teamroster.database.PlayerDao
+import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
+import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
 import com.kingmo.example.teamroster.viewmodels.ErrorViewModel
 import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
@@ -87,5 +89,16 @@ class RosterViewModelTest {
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
         verify(playerDao).getPlayers()
+    }
+
+    @Test
+    fun shouldShowDefaultErrorMessageOnLoadPlayersError() {
+        `when`(playerDao.getPlayers()).thenReturn(Observable.error(Exception(EMPTY_STRING)))
+
+        viewModel.loadPlayers()
+
+        val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
+        assertEquals(DEFAULT_ERROR_MSG, errorViewModel?.message)
+        assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
     }
 }

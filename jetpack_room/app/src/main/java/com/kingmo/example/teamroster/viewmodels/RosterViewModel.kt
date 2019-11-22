@@ -34,9 +34,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             }
 
             override fun onError(error: Throwable) {
-                val loadErrorViewModel = ErrorViewModel()
-                loadErrorViewModel.message = if (!error.message?.trim().isNullOrEmpty()) error.message!! else DEFAULT_ERROR_MSG
-                errorViewModel.postValue(loadErrorViewModel)
+                errorViewModel.postValue(getErrorViewModel(error))
             }
         })
     }
@@ -51,9 +49,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             }
 
             override fun onError(error: Throwable) {
-                val addErrorViewModel = ErrorViewModel()
-                addErrorViewModel.message = if (!error.message?.trim().isNullOrEmpty()) error.message!! else DEFAULT_ERROR_MSG
-                errorViewModel.postValue(addErrorViewModel)
+                errorViewModel.postValue(getErrorViewModel(error))
             }
         })
     }
@@ -65,9 +61,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             .subscribe(object : BaseCompletableObserver() {
 
                 override fun onError(error: Throwable) {
-                    val addErrorViewModel = ErrorViewModel()
-                    addErrorViewModel.message = if (!error.message?.trim().isNullOrEmpty()) error.message!! else DEFAULT_ERROR_MSG
-                    errorViewModel.postValue(addErrorViewModel)
+                    errorViewModel.postValue(getErrorViewModel(error))
                 }
             })
     }
@@ -89,5 +83,11 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         bio = playerInfoForm.playerBio,
         photoUrl = playerInfoForm.profileUrl
     )
+
+    private fun getErrorViewModel(error: Throwable): ErrorViewModel {
+        val loadErrorViewModel = ErrorViewModel()
+        loadErrorViewModel.message = if (!error.message?.trim().isNullOrEmpty()) error.message!! else DEFAULT_ERROR_MSG
+        return loadErrorViewModel
+    }
 }
 
