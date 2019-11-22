@@ -2,10 +2,9 @@ package com.kingmo.example.teamroster.view
 
 interface RosterClickListener {
     fun onAddPlayerClick()
-    fun onPlayerRemoved()
 }
 
-interface AddPlayerInfoClickListener {
+interface PlayerInfoClickListener {
     fun onAddPlayer()
     fun onPlayerAddedSuccess()
 }
@@ -14,8 +13,8 @@ class RosterHandler(private val rosterClickListener: RosterClickListener) {
     fun goToAddPlayerScreen() = rosterClickListener.onAddPlayerClick()
 }
 
-class AddPlayerHandler(private val addPlayerInfoClickListener: AddPlayerInfoClickListener) {
+class AddPlayerHandler(private val playerInfoClickListener: PlayerInfoClickListener) {
     fun addPlayer() {
-        addPlayerInfoClickListener.onAddPlayer()
+        playerInfoClickListener.onAddPlayer()
     }
 }

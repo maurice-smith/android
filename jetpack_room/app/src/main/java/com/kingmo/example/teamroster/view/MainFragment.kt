@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kingmo.example.teamroster.AddPlayerActivity
+import com.kingmo.example.teamroster.PlayerActivity
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
 import com.kingmo.example.teamroster.database.RosterAppDatabase
@@ -70,11 +70,7 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
     }
 
     override fun onAddPlayerClick() {
-        startActivity(Intent(activity, AddPlayerActivity::class.java))
-    }
-
-    override fun onPlayerRemoved() {
-        Log.d(TAG, "Player Removed.")
+        startActivity(Intent(activity, PlayerActivity::class.java))
     }
 
     override fun doAction(itemViewModel: AdapterItemViewModel) {

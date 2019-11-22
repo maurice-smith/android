@@ -7,7 +7,7 @@ import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
-import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
+import com.kingmo.example.teamroster.view.PlayerInfoClickListener
 import com.kingmo.example.teamroster.viewmodels.ErrorViewModel
 import com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel
 import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
@@ -34,7 +34,7 @@ class RosterViewModelTest {
     private lateinit var playerDao: PlayerDao
 
     @Mock
-    private lateinit var playerInfoClickListener: AddPlayerInfoClickListener
+    private lateinit var playerInfoClickListener: PlayerInfoClickListener
 
     private lateinit var viewModel: RosterViewModel
 
@@ -114,6 +114,7 @@ class RosterViewModelTest {
         viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
 
         verify(playerInfoClickListener).onPlayerAddedSuccess()
+        verify(playerDao).insert(Player())
     }
 
     @Test
@@ -127,5 +128,31 @@ class RosterViewModelTest {
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
         verifyZeroInteractions(playerInfoClickListener)
+        verify(playerDao).insert(Player())
     }
+
+    @Test
+    fun shouldRemovePlayerSuccess() {
+        val playerToRemove = Player()
+        `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.complete())
+
+        viewModel.removePlayer(PlayerViewModel(playerToRemove))
+
+        verify(playerDao).delete(Player())
+    }
+
+    @Test
+    fun shouldRemovePlayerError() {
+        val playerToRemove = Player()
+        `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.error(Exception("ERROR1")))
+
+        viewModel.removePlayer(PlayerViewModel(playerToRemove))
+
+        val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
+        assertEquals("ERROR1", errorViewModel?.message)
+        assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
+
+        verify(playerDao).delete(Player())
+    }
+
 }

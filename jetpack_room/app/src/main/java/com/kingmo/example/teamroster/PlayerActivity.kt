@@ -10,12 +10,12 @@ import com.kingmo.example.teamroster.database.RosterAppDatabase
 import com.kingmo.example.teamroster.databinding.ActivityAddPlayerBinding
 import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
 import com.kingmo.example.teamroster.view.AddPlayerHandler
-import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
+import com.kingmo.example.teamroster.view.PlayerInfoClickListener
 import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
 import com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 
-class AddPlayerActivity : AppCompatActivity(), AddPlayerInfoClickListener {
+class PlayerActivity : AppCompatActivity(), PlayerInfoClickListener {
 
     private lateinit var rosterViewModel: RosterViewModel
     private lateinit var rosterDb: RosterAppDatabase
@@ -23,7 +23,7 @@ class AddPlayerActivity : AppCompatActivity(), AddPlayerInfoClickListener {
     private var playerFormViewModel: PlayerInfoFormViewModel? = null
 
     companion object {
-        val TAG: String = AddPlayerActivity::class.java.simpleName
+        val TAG: String = PlayerActivity::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

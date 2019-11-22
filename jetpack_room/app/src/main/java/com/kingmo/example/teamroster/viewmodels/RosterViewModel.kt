@@ -9,7 +9,7 @@ import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
-import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
+import com.kingmo.example.teamroster.view.PlayerInfoClickListener
 
 class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProvider: SchedulerProvider) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
@@ -36,7 +36,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         })
     }
 
-    fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, playerInfoClickListener: AddPlayerInfoClickListener) {
+    fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, playerInfoClickListener: PlayerInfoClickListener) {
         playerDao.insert(convertPlayerFormToPlayerObject(playerInfoForm))
             .observeOn(scheduleProvider.mainThread())
             .subscribeOn(scheduleProvider.backgroundThread())
