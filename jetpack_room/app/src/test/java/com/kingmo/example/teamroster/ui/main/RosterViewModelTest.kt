@@ -7,18 +7,20 @@ import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
+import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
 import com.kingmo.example.teamroster.viewmodels.ErrorViewModel
+import com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel
 import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
+import io.reactivex.Completable
 import io.reactivex.Observable
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
-
-import org.mockito.Mock
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -30,6 +32,9 @@ class RosterViewModelTest {
 
     @Mock
     private lateinit var playerDao: PlayerDao
+
+    @Mock
+    private lateinit var playerInfoClickListener: AddPlayerInfoClickListener
 
     private lateinit var viewModel: RosterViewModel
 
@@ -43,7 +48,7 @@ class RosterViewModelTest {
     }
 
     @Test
-    fun shouldLoadPlayersSuccessWithPlayers() {
+    fun shouldLoadPlayersOnSuccessWithPlayers() {
         `when`(playerDao.getPlayers()).thenReturn(Observable.just(listOf(Player(playerId = 123, firstName = "Paul", lastName = "Wall"))))
 
         viewModel.loadPlayers()
@@ -62,7 +67,7 @@ class RosterViewModelTest {
     }
 
     @Test
-    fun shouldLoadPlayersSuccessWithoutPlayers() {
+    fun shouldLoadPlayersOnSuccessWithoutPlayers() {
         `when`(playerDao.getPlayers()).thenReturn(Observable.just(emptyList()))
 
         viewModel.loadPlayers()
@@ -100,5 +105,27 @@ class RosterViewModelTest {
         val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
         assertEquals(DEFAULT_ERROR_MSG, errorViewModel?.message)
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
+    }
+
+    @Test
+    fun shouldAddPlayerOnSuccess() {
+        `when`(playerDao.insert(Player())).thenReturn(Completable.complete())
+
+        viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
+
+        verify(playerInfoClickListener).onPlayerAddedSuccess()
+    }
+
+    @Test
+    fun shouldShowAddPlayerError() {
+        `when`(playerDao.insert(Player())).thenReturn(Completable.error(Exception("ERROR")))
+
+        viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
+
+        val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
+        assertEquals("ERROR", errorViewModel?.message)
+        assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
+
+        verifyZeroInteractions(playerInfoClickListener)
     }
 }

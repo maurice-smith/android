@@ -10,15 +10,12 @@ import com.kingmo.example.teamroster.models.BaseObserver
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
 import com.kingmo.example.teamroster.view.AddPlayerInfoClickListener
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProvider: SchedulerProvider) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
     val playersLiveData: MutableLiveData<List<PlayerViewModel>> = MutableLiveData()
-
 
     fun loadPlayers() {
         playerDao.getPlayers().subscribe(object : BaseObserver<List<Player>>() {
@@ -41,8 +38,8 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
 
     fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, playerInfoClickListener: AddPlayerInfoClickListener) {
         playerDao.insert(convertPlayerFormToPlayerObject(playerInfoForm))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            .observeOn(scheduleProvider.mainThread())
+            .subscribeOn(scheduleProvider.backgroundThread())
             .subscribe(object: BaseCompletableObserver() {
             override fun onComplete() {
                 playerInfoClickListener.onPlayerAddedSuccess()
@@ -56,8 +53,8 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
 
     fun removePlayer(playerToRemove: PlayerViewModel) {
         playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+            .observeOn(scheduleProvider.mainThread())
+            .subscribeOn(scheduleProvider.backgroundThread())
             .subscribe(object : BaseCompletableObserver() {
 
                 override fun onError(error: Throwable) {
