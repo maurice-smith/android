@@ -80,11 +80,11 @@
         <Button
             android:id="@+id/add_player"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="76dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/add_player_txt"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:onClick="@{view -> rosterHandler.goToAddPlayerScreen()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
