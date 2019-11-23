@@ -37,19 +37,20 @@ abstract class BaseRecyclerAdapter(
         return itemViewModelList.get(position)
     }
 
-    class BaseViewHolder(
+    open class BaseViewHolder(
         private val itemBinding: ViewDataBinding,
         private val clickListener: ItemClickListener?
     ) : RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(itemViewModel: AdapterItemViewModel) {
+        open fun bind(itemViewModel: AdapterItemViewModel) {
             itemBinding.setVariable(itemViewModel.getBindingVariable(), itemViewModel)
             itemBinding.executePendingBindings()
 
-            itemBinding.root.setOnClickListener { clickListener?.doAction(itemViewModel) }
+            itemBinding.root.setOnClickListener { clickListener?.doItemAction(itemViewModel) }
         }
     }
 }
 
 interface ItemClickListener {
-    fun doAction(itemViewModel: AdapterItemViewModel)
+    fun doItemAction(itemViewModel: AdapterItemViewModel)
+    fun removeItem(itemViewModel: AdapterItemViewModel)
 }

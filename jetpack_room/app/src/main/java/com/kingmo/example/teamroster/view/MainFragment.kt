@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -73,10 +74,23 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
         startActivity(Intent(activity, PlayerActivity::class.java))
     }
 
-    override fun doAction(itemViewModel: AdapterItemViewModel) {
+    override fun doItemAction(itemViewModel: AdapterItemViewModel) {
         val playerViewModel: PlayerViewModel = itemViewModel as PlayerViewModel
         //TODO: take user to details
+
+        Log.d(TAG, "doItemAction id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
+    }
+
+    override fun removeItem(itemViewModel: AdapterItemViewModel) {
+        val playerViewModel: PlayerViewModel = itemViewModel as PlayerViewModel
+        Log.d(TAG, "removeItem id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
         //rosterViewModel.removePlayer(playerViewModel)
-        Log.d(TAG, "Item Click id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
+
+        val successDialog: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+        successDialog.setCancelable(true)
+            .setMessage("Are you sure you want to delete this player from the roster? ")
+            .setPositiveButton("YES") { dialog, which ->  rosterViewModel.removePlayer(playerViewModel) }
+            .setNegativeButton("NO", null)
+            .show()
     }
 }
