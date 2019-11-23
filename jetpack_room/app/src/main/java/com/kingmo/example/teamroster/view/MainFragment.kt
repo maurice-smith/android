@@ -83,14 +83,11 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
 
     override fun removeItem(itemViewModel: AdapterItemViewModel) {
         val playerViewModel: PlayerViewModel = itemViewModel as PlayerViewModel
-        Log.d(TAG, "removeItem id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
-        //rosterViewModel.removePlayer(playerViewModel)
-
         val successDialog: AlertDialog.Builder = AlertDialog.Builder(activity!!)
-        successDialog.setCancelable(true)
-            .setMessage("Are you sure you want to delete this player from the roster? ")
-            .setPositiveButton("YES") { dialog, which ->  rosterViewModel.removePlayer(playerViewModel) }
-            .setNegativeButton("NO", null)
+        successDialog.setCancelable(false)
+            .setMessage(R.string.delete_player_confirmation_msg)
+            .setPositiveButton(R.string.yes) { dialog, which ->  rosterViewModel.removePlayer(playerViewModel) }
+            .setNegativeButton(R.string.no, null)
             .show()
     }
 }

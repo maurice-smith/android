@@ -1,9 +1,9 @@
 package com.kingmo.example.teamroster
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.kingmo.example.teamroster.database.RosterAppDatabase
@@ -50,11 +50,7 @@ class PlayerActivity : AppCompatActivity(), PlayerInfoClickListener {
     }
 
     override fun onPlayerAddedSuccess() {
-        val successDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-        successDialog.setCancelable(false)
-            .setTitle("TITLE")
-            .setMessage("SUCCESS")
-            .setPositiveButton("OK") { dialog, which ->  finish() }
-            .show()
+        Toast.makeText(this, R.string.player_add_success_msg, Toast.LENGTH_SHORT).show()
+        finish()
     }
 }
