@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kingmo.example.teamroster.PlayerActivity
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
 import com.kingmo.example.teamroster.database.RosterAppDatabase

@@ -1,8 +1,8 @@
-package com.kingmo.example.teamroster
+package com.kingmo.example.teamroster.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kingmo.example.teamroster.view.MainFragment
+import com.kingmo.example.teamroster.R
 
 class MainActivity : AppCompatActivity() {
 

@@ -16,10 +16,14 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
     val playersLiveData: MutableLiveData<List<PlayerViewModel>> = MutableLiveData()
+    val progressBarVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
     fun loadPlayers() {
-        playerDao.getPlayers().subscribe(object : BaseObserver<List<Player>>() {
+        playerDao.getPlayers()
+            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
+            .subscribe(object : BaseObserver<List<Player>>() {
             override fun onNext(result: List<Player>) {
+                progressBarVisibility.postValue(View.GONE)
                 if (result.isNotEmpty()) {
                     playersLiveData.postValue(result.map { PlayerViewModel(it) })
                     playerRosterVisibility.postValue(View.VISIBLE)
@@ -31,6 +35,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             }
 
             override fun onError(error: Throwable) {
+                progressBarVisibility.postValue(View.GONE)
                 errorViewModel.postValue(getErrorViewModel(error))
             }
         })
@@ -40,12 +45,14 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         playerDao.insert(convertPlayerFormToPlayerObject(playerInfoForm))
             .observeOn(scheduleProvider.mainThread())
             .subscribeOn(scheduleProvider.backgroundThread())
+            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object: BaseCompletableObserver() {
             override fun onComplete() {
                 playerInfoClickListener.onPlayerAddedSuccess()
             }
 
             override fun onError(error: Throwable) {
+                progressBarVisibility.postValue(View.GONE)
                 errorViewModel.postValue(getErrorViewModel(error))
             }
         })
@@ -55,9 +62,11 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
             .observeOn(scheduleProvider.mainThread())
             .subscribeOn(scheduleProvider.backgroundThread())
+            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object : BaseCompletableObserver() {
 
                 override fun onError(error: Throwable) {
+                    progressBarVisibility.postValue(View.GONE)
                     errorViewModel.postValue(getErrorViewModel(error))
                 }
             })
