@@ -78,6 +78,9 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
         //TODO: take user to details
 
         Log.d(TAG, "doItemAction id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
+        val detailsIntent = Intent(activity, PlayerDetailsActivity::class.java)
+        detailsIntent.putExtra(PlayerDetailsActivity.PLAYER_ID_EXTRA, playerViewModel.getPlayerId())
+        startActivity(detailsIntent)
     }
 
     override fun removeItem(itemViewModel: AdapterItemViewModel) {

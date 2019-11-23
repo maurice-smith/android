@@ -72,6 +72,10 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             })
     }
 
+    fun loadPlayerDetails(playerId: Int) {
+        playerDao.findPlayerById(playerId)
+    }
+
     private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
         playerId =  playerViewModel.getPlayerId(),
         firstName = playerViewModel.getFirstName(),
