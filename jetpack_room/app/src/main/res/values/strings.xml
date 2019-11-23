@@ -13,7 +13,7 @@
     <string name="bio_hint">Enter Player Bio</string>
     <string name="position_hint">Player Position</string>
     <string name="photo_url_hint">Profile Photo Url</string>
-    <string name="delete_player_confirmation_msg">Are you sure you want to delete this player from the roster?</string>
+    <string name="delete_player_confirmation_msg">Are you sure you want to delete %1$s %2$s from the roster?</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="player_add_success_msg">Player added to Roster!</string>
