@@ -3,7 +3,6 @@ package com.kingmo.example.teamroster.database
 import androidx.room.*
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Observable
 
 //https://via.placeholder.com/150.png/FF0000/000000?text=Profile+Image
@@ -25,7 +24,7 @@ interface PlayerDao {
     fun getPlayers(): Observable<List<Player>>
 
     @Query("SELECT * FROM players WHERE player_id = :playerId LIMIT 1")
-    fun findPlayerById(playerId: Int): Flowable<Player>
+    fun findPlayerById(playerId: Int): Observable<Player>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg player: Player): Completable

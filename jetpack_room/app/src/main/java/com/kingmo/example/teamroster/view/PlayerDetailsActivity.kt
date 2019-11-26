@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.RosterApplication
@@ -39,6 +40,9 @@ class PlayerDetailsActivity : AppCompatActivity() {
 
         detailsBinding.rosterViewModel = rosterViewModel
 
+        //rosterViewModel.playerDetails.observe(this, Observer { detailsBinding.playerViewModel = it })
+
         rosterViewModel.loadPlayerDetails(inComingPlayerId)
+
     }
 }

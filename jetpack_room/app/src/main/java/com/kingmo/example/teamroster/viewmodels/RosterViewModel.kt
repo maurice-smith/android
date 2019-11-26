@@ -17,6 +17,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
     val playersLiveData: MutableLiveData<List<PlayerViewModel>> = MutableLiveData()
     val progressBarVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    val playerDetails: MutableLiveData<PlayerViewModel> = MutableLiveData()
 
     fun loadPlayers() {
         playerDao.getPlayers()
@@ -74,6 +75,21 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
 
     fun loadPlayerDetails(playerId: Int) {
         playerDao.findPlayerById(playerId)
+            .observeOn(scheduleProvider.mainThread())
+            .subscribeOn(scheduleProvider.backgroundThread())
+            .subscribe(object : BaseObserver<Player>() {
+                override fun onNext(result: Player) {
+                    progressBarVisibility.postValue(View.GONE)
+                    playerRosterVisibility.postValue(View.VISIBLE)
+                    val playerViewModelResult = PlayerViewModel(result)
+                    playerDetails.postValue(playerViewModelResult)
+                }
+
+                override fun onError(error: Throwable) {
+                    progressBarVisibility.postValue(View.GONE)
+                    errorViewModel.postValue(getErrorViewModel(error))
+                }
+            })
     }
 
     private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
