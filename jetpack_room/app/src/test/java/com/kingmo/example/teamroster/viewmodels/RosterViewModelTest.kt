@@ -1,4 +1,4 @@
-package com.kingmo.example.teamroster.ui.main
+package com.kingmo.example.teamroster.viewmodels
 
 import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -8,13 +8,8 @@ import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
 import com.kingmo.example.teamroster.view.PlayerInfoClickListener
-import com.kingmo.example.teamroster.viewmodels.ErrorViewModel
-import com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel
-import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
-import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 import io.reactivex.Completable
 import io.reactivex.Observable
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -27,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class RosterViewModelTest {
+    // This Rule allows LiveData & other Jetpack components to execute synchronously
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -41,10 +37,6 @@ class RosterViewModelTest {
     @Before
     fun setUp() {
         viewModel = RosterViewModel(playerDao, TestSchedulerProvider())
-    }
-
-    @After
-    fun tearDown() {
     }
 
     @Test

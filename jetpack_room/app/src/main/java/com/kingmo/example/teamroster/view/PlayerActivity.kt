@@ -31,6 +31,7 @@ class PlayerActivity : AppCompatActivity(), PlayerInfoClickListener {
         activityBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_add_player
         )
+        activityBinding.lifecycleOwner = this
         setContentView(activityBinding.root)
 
         rosterDb = (applicationContext as RosterApplication).getAppDataBase()

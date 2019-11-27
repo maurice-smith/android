@@ -3,7 +3,6 @@ package com.kingmo.example.teamroster.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
 
     companion object {
         fun newInstance() = MainFragment()
-        val TAG: String = MainFragment::class.java.simpleName
     }
 
     private lateinit var rosterViewModel: RosterViewModel
@@ -56,7 +54,6 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
         fragBinding.rosterHandler = RosterHandler(this)
         fragBinding.rosterViewModel = rosterViewModel
 
-
         val rosterList: RecyclerView = fragBinding.rosterList
         rosterList.layoutManager = LinearLayoutManager(context)
         playersRecyclerAdapter = PlayersRecyclerAdapter(mutableListOf(), this)
@@ -75,9 +72,6 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
 
     override fun doItemAction(itemViewModel: AdapterItemViewModel) {
         val playerViewModel: PlayerViewModel = itemViewModel as PlayerViewModel
-        //TODO: take user to details
-
-        Log.d(TAG, "doItemAction id[${playerViewModel.getPlayerId()}] name[${playerViewModel.getFirstName()}]")
         val detailsIntent = Intent(activity, PlayerDetailsActivity::class.java)
         detailsIntent.putExtra(PlayerDetailsActivity.PLAYER_ID_EXTRA, playerViewModel.getPlayerId())
         startActivity(detailsIntent)

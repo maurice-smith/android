@@ -9,6 +9,7 @@ interface SchedulerProvider {
     fun mainThread(): Scheduler
 }
 
+// Allows for trampoline aka test schedulers to be used
 class TestSchedulerProvider: SchedulerProvider {
     override fun backgroundThread(): Scheduler = Schedulers.trampoline()
     override fun mainThread(): Scheduler = Schedulers.trampoline()
