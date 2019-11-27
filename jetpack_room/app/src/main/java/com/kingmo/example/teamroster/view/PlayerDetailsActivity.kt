@@ -29,6 +29,7 @@ class PlayerDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         detailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_player_details)
         setContentView(detailsBinding.root)
+        detailsBinding.lifecycleOwner = this
 
         val inComingPlayerId: Int = intent.getIntExtra(PLAYER_ID_EXTRA, PLAYER_ID_DEFAULT)
 

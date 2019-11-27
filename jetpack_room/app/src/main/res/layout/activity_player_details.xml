@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="@{rosterViewModel.playerRosterVisibility}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
@@ -58,7 +59,7 @@
                     android:layout_marginTop="20dp"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:text="@{@string/player_name_format(rosterViewModel.firstName, rosterViewModel.playerDetails.lastName)}"
+                    android:text="@{@string/player_name_format(rosterViewModel.playerDetails.firstName, rosterViewModel.playerDetails.lastName)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Name Title"/>
@@ -69,8 +70,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:layout_marginTop="16dp"
-                    android:text="@{playerViewModel.playerBio}"
-                    android:visibility="@{playerViewModel.bioVisibility}"
+                    android:text="@{rosterViewModel.playerDetails.playerBio}"
+                    android:visibility="@{rosterViewModel.playerDetails.bioVisibility}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/player_name_details"
                     tools:text="Player Bio"/>
@@ -80,8 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="@{@string/jersey_format(playerViewModel.jerseyNumber)}"
-                    android:visibility="@{playerViewModel.jerseyNumberVisibility}"
+                    android:text="@{@string/jersey_format(rosterViewModel.playerDetails.jerseyNumber)}"
+                    android:visibility="@{rosterViewModel.playerDetails.jerseyNumberVisibility}"
                     android:layout_marginTop="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/details_bio"
@@ -92,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="@{playerViewModel.rosterPosition}"
+                    android:text="@{rosterViewModel.playerDetails.rosterPosition}"
                     android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/details_jersey"

@@ -17,5 +17,6 @@
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="player_add_success_msg">Player added to Roster!</string>
-    <string name="title_activity_player_details">PlayerDetails</string>
+    <string name="title_activity_player_details">Player Profile</string>
+    <string name="title_activity_add_player">Create Player Profile</string>
 </resources>
