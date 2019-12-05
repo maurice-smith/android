@@ -6,3 +6,5 @@ Examples of Android Components, design patterns, &amp; libraries
 - Paging Library (Coming Soon)
 - Jetpack Navigation Component (TBD)
 - WorkManager (TBD)
+- Espresso (TDB)
+- Image Libraries (TDB. Picasso. Glide)
