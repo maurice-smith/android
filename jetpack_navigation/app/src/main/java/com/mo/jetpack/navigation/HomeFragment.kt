@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.findNavController
+import com.mo.jetpack.navigation.models.ContentModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +39,9 @@ class HomeFragment : Fragment() {
     ): View? {
         val rootView: View = inflater.inflate(R.layout.fragment_home, container, false)
         rootView.findViewById<Button>(R.id.content_button).setOnClickListener {
-            val contentAction = HomeFragmentDirections.actionHomeFragmentToContentFragment()
+            val contentAction = HomeFragmentDirections.actionHomeFragmentToContentFragment(ContentModel(resources.getString(R.string.content_title),
+                resources.getString(R.string.content_body),
+                "Mike Jones"))
             it.findNavController().navigate(contentAction)
         }
         return rootView

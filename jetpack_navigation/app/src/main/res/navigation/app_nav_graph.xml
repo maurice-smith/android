@@ -20,5 +20,11 @@
         android:id="@+id/contentFragment"
         android:name="com.mo.jetpack.navigation.ContentFragment"
         android:label="fragment_content"
-        tools:layout="@layout/fragment_content" />
+        tools:layout="@layout/fragment_content">
+        <argument
+            android:name="contentModel"
+            app:argType="com.mo.jetpack.navigation.models.ContentModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
