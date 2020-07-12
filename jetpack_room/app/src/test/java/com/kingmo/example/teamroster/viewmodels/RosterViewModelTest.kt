@@ -2,7 +2,7 @@ package com.kingmo.example.teamroster.viewmodels
 
 import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.kingmo.example.teamroster.database.Player
+import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
@@ -41,7 +41,7 @@ class RosterViewModelTest {
 
     @Test
     fun shouldLoadPlayersOnSuccessWithPlayers() {
-        `when`(playerDao.getPlayers()).thenReturn(Observable.just(listOf(Player(playerId = 123, firstName = "Paul", lastName = "Wall"))))
+        `when`(playerDao.getPlayers()).thenReturn(Observable.just(listOf(PlayerModel(playerId = 123, firstName = "Paul", lastName = "Wall"))))
 
         viewModel.loadPlayers()
 
@@ -101,17 +101,17 @@ class RosterViewModelTest {
 
     @Test
     fun shouldAddPlayerOnSuccess() {
-        `when`(playerDao.insert(Player())).thenReturn(Completable.complete())
+        `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.complete())
 
         viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
 
         verify(playerInfoClickListener).onPlayerAddedSuccess()
-        verify(playerDao).insert(Player())
+        verify(playerDao).insert(PlayerModel())
     }
 
     @Test
     fun shouldShowAddPlayerError() {
-        `when`(playerDao.insert(Player())).thenReturn(Completable.error(Exception("ERROR")))
+        `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.error(Exception("ERROR")))
 
         viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
 
@@ -120,22 +120,22 @@ class RosterViewModelTest {
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
         verifyZeroInteractions(playerInfoClickListener)
-        verify(playerDao).insert(Player())
+        verify(playerDao).insert(PlayerModel())
     }
 
     @Test
     fun shouldRemovePlayerSuccess() {
-        val playerToRemove = Player()
+        val playerToRemove = PlayerModel()
         `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.complete())
 
         viewModel.removePlayer(PlayerViewModel(playerToRemove))
 
-        verify(playerDao).delete(Player())
+        verify(playerDao).delete(PlayerModel())
     }
 
     @Test
     fun shouldRemovePlayerError() {
-        val playerToRemove = Player()
+        val playerToRemove = PlayerModel()
         `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.error(Exception("ERROR1")))
 
         viewModel.removePlayer(PlayerViewModel(playerToRemove))
@@ -144,7 +144,7 @@ class RosterViewModelTest {
         assertEquals("ERROR1", errorViewModel?.message)
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
-        verify(playerDao).delete(Player())
+        verify(playerDao).delete(PlayerModel())
     }
 
 }

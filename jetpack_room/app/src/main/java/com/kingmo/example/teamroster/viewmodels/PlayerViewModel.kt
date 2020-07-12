@@ -4,30 +4,30 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.kingmo.example.teamroster.BR
 import com.kingmo.example.teamroster.R
-import com.kingmo.example.teamroster.database.Player
+import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.view.adapters.AdapterItemViewModel
 
-class PlayerViewModel(private val player: Player): AdapterItemViewModel, ViewModel() {
+class PlayerViewModel(private val playerModel: PlayerModel): AdapterItemViewModel, ViewModel() {
 
-    fun getPlayerId(): Int = player.playerId
+    fun getPlayerId(): Int = playerModel.playerId
 
-    fun getPlayerBio(): String? = player.bio
+    fun getPlayerBio(): String? = playerModel.bio
 
-    fun getBioVisibility(): Int = getVisibilityForStringProperty(player.bio)
+    fun getBioVisibility(): Int = getVisibilityForStringProperty(playerModel.bio)
 
-    fun getFirstName(): String = player.firstName
+    fun getFirstName(): String = playerModel.firstName
 
-    fun getLastName(): String = player.lastName
+    fun getLastName(): String = playerModel.lastName
 
-    fun getJerseyNumber(): String? = player.jerseyNumber
+    fun getJerseyNumber(): String? = playerModel.jerseyNumber
 
-    fun getJerseyNumberVisibility(): Int = getVisibilityForStringProperty(player.jerseyNumber)
+    fun getJerseyNumberVisibility(): Int = getVisibilityForStringProperty(playerModel.jerseyNumber)
 
-    fun getRosterPosition(): String = player.position
+    fun getRosterPosition(): String = playerModel.position
 
-    fun getPlayerPhotoUrl(): String? = player.photoUrl
+    fun getPlayerPhotoUrl(): String? = playerModel.photoUrl
 
-    fun getPlayerPhotoVisibility(): Int = if (!player.photoUrl?.trim().isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+    fun getPlayerPhotoVisibility(): Int = if (!playerModel.photoUrl?.trim().isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
 
     override fun getLayoutResId(): Int = R.layout.player_item_view
 

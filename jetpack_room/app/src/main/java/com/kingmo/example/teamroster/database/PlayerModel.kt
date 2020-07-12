@@ -8,7 +8,7 @@ import io.reactivex.Observable
 //https://via.placeholder.com/150.png/FF0000/000000?text=Profile+Image
 
 @Entity(tableName = "players")
-data class Player(
+data class PlayerModel(
     @ColumnInfo(name = "player_id") @PrimaryKey(autoGenerate = true) var playerId: Int = 0,
     @ColumnInfo(name = "first_name") var firstName: String = EMPTY_STRING,
     @ColumnInfo(name = "last_name") var lastName: String = EMPTY_STRING,
@@ -21,17 +21,17 @@ data class Player(
 @Dao
 interface PlayerDao {
     @Query("SELECT * FROM players")
-    fun getPlayers(): Observable<List<Player>>
+    fun getPlayers(): Observable<List<PlayerModel>>
 
     @Query("SELECT * FROM players WHERE player_id = :playerId LIMIT 1")
-    fun findPlayerById(playerId: Int): Observable<Player>
+    fun findPlayerById(playerId: Int): Observable<PlayerModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg player: Player): Completable
+    fun insert(vararg playerModel: PlayerModel): Completable
 
     @Update
-    fun updatePlayers(vararg players: Player)
+    fun updatePlayers(vararg playerModels: PlayerModel)
 
     @Delete
-    fun delete(user: Player): Completable
+    fun delete(user: PlayerModel): Completable
 }

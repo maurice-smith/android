@@ -3,7 +3,7 @@ package com.kingmo.example.teamroster.viewmodels
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kingmo.example.teamroster.database.Player
+import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
@@ -22,8 +22,8 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     fun loadPlayers() {
         playerDao.getPlayers()
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
-            .subscribe(object : BaseObserver<List<Player>>() {
-            override fun onNext(result: List<Player>) {
+            .subscribe(object : BaseObserver<List<PlayerModel>>() {
+            override fun onNext(result: List<PlayerModel>) {
                 progressBarVisibility.postValue(View.GONE)
                 if (result.isNotEmpty()) {
                     playersLiveData.postValue(result.map { PlayerViewModel(it) })
@@ -60,7 +60,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     }
 
     fun removePlayer(playerToRemove: PlayerViewModel) {
-        playerDao.delete(convertPlayerViewModelToPlayerObject(playerToRemove))
+        playerDao.delete(convertPlayerViewModelToPlayerModel(playerToRemove))
             .observeOn(scheduleProvider.mainThread())
             .subscribeOn(scheduleProvider.backgroundThread())
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
@@ -77,8 +77,8 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         playerDao.findPlayerById(playerId)
             .observeOn(scheduleProvider.mainThread())
             .subscribeOn(scheduleProvider.backgroundThread())
-            .subscribe(object : BaseObserver<Player>() {
-                override fun onNext(result: Player) {
+            .subscribe(object : BaseObserver<PlayerModel>() {
+                override fun onNext(result: PlayerModel) {
                     progressBarVisibility.postValue(View.GONE)
                     playerRosterVisibility.postValue(View.VISIBLE)
                     val playerViewModelResult = PlayerViewModel(result)
@@ -92,7 +92,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
             })
     }
 
-    private fun convertPlayerViewModelToPlayerObject(playerViewModel: PlayerViewModel): Player = Player(
+    private fun convertPlayerViewModelToPlayerModel(playerViewModel: PlayerViewModel): PlayerModel = PlayerModel(
         playerId =  playerViewModel.getPlayerId(),
         firstName = playerViewModel.getFirstName(),
         lastName = playerViewModel.getLastName(),
@@ -101,7 +101,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
         bio = playerViewModel.getPlayerBio()
     )
 
-    private fun convertPlayerFormToPlayerObject(playerInfoForm: PlayerInfoFormViewModel): Player = Player(
+    private fun convertPlayerFormToPlayerObject(playerInfoForm: PlayerInfoFormViewModel): PlayerModel = PlayerModel(
         firstName = playerInfoForm.firstName,
         lastName = playerInfoForm.lastName,
         jerseyNumber = playerInfoForm.jerseyNumber,

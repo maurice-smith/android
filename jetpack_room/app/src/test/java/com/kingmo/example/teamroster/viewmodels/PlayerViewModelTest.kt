@@ -3,7 +3,7 @@ package com.kingmo.example.teamroster.viewmodels
 import android.view.View
 import androidx.databinding.library.baseAdapters.BR
 import com.kingmo.example.teamroster.R
-import com.kingmo.example.teamroster.database.Player
+import com.kingmo.example.teamroster.database.PlayerModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -14,7 +14,7 @@ class PlayerViewModelTest {
 
     @Before
     fun setUp() {
-        playerViewModel = PlayerViewModel(Player(123, "Mike", "Jones", null, "RF", null, null))
+        playerViewModel = PlayerViewModel(PlayerModel(123, "Mike", "Jones", null, "RF", null, null))
     }
 
     @Test
@@ -33,7 +33,7 @@ class PlayerViewModelTest {
 
     @Test
     fun shouldReturnViewModelVisibilitiesVisible() {
-        playerViewModel = PlayerViewModel(Player(123, "Mike", "Jones", "15", "RF", "/img.png", "Aye"))
+        playerViewModel = PlayerViewModel(PlayerModel(123, "Mike", "Jones", "15", "RF", "/img.png", "Aye"))
 
         assertVisibilitiesVisible(playerViewModel.getJerseyNumberVisibility())
         assertVisibilitiesVisible(playerViewModel.getBioVisibility())
@@ -42,7 +42,7 @@ class PlayerViewModelTest {
 
     @Test
     fun shouldReturnAllValues() {
-        playerViewModel = PlayerViewModel(Player(123, "Paul", "Wall", "15", "LF", "/img.png", "Bio Text"))
+        playerViewModel = PlayerViewModel(PlayerModel(123, "Paul", "Wall", "15", "LF", "/img.png", "Bio Text"))
 
         assertEquals("Paul", playerViewModel.getFirstName())
         assertEquals("Wall", playerViewModel.getLastName())
