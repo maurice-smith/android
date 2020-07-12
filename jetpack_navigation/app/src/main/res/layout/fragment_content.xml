@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/content_fragment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,8 @@
             android:layout_marginTop="12dp"
             android:text="@{contentViewModel.title}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="Title"/>
 
 
         <TextView
@@ -38,16 +39,18 @@
             android:layout_marginTop="12dp"
             android:text="@{contentViewModel.author}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content_info_title" />
+            app:layout_constraintTop_toBottomOf="@id/content_info_title"
+            tools:text="Author"/>
 
         <TextView
             android:id="@+id/content_info_body"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="@{contentViewModel.body}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content_info_author" />
+            app:layout_constraintTop_toBottomOf="@id/content_info_author"
+            tools:text="body"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
