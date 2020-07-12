@@ -6,26 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.mo.jetpack.navigation.databinding.FragmentContentBinding
 
 class ContentFragment : Fragment() {
-     private val navigationArgs: ContentFragmentArgs by navArgs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        navigationArgs.contentModel
-        Log.d(TAG, "content title: ${navigationArgs.contentModel?.title}")
-        Log.d(TAG, "content author: ${navigationArgs.contentModel?.author}")
-        Log.d(TAG, "content body:\n${navigationArgs.contentModel?.body}")
-    }
+    private val navigationArgs: ContentFragmentArgs by navArgs()
+    private lateinit var viewBinding: FragmentContentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_content, container, false)
+        viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_content, container, false)
+        return viewBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewBinding.contentViewModel = navigationArgs.contentModel
     }
 
     companion object {
