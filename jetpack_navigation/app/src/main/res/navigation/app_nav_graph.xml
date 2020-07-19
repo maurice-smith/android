@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/contentFragment"
         android:name="com.mo.jetpack.navigation.ContentFragment"
-        android:label="fragment_content"
+        android:label="{Content Fragment}"
         tools:layout="@layout/fragment_content">
         <argument
             android:name="contentModel"
