@@ -17,7 +17,7 @@ android {
         //export room db schemas
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
     }
@@ -28,8 +28,17 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
@@ -51,6 +60,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodel_version"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
 
     kapt "androidx.hilt:hilt-compiler:$hilt_compiler_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

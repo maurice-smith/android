@@ -1,17 +1,22 @@
 package com.kingmo.example.teamroster.viewmodels
 
 import android.view.View
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.database.PlayerDao
+import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
+import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
+import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
 import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
 import com.kingmo.example.teamroster.view.PlayerInfoClickListener
 
-class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProvider: SchedulerProvider) : ViewModel() {
+class RosterViewModel @ViewModelInject constructor(private val playerRepo: PlayerRepo, @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
@@ -20,7 +25,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     val playerDetails: MutableLiveData<PlayerViewModel> = MutableLiveData()
 
     fun loadPlayers() {
-        playerDao.getPlayers()
+        playerRepo.getPlayers()
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object : BaseObserver<List<PlayerModel>>() {
             override fun onNext(result: List<PlayerModel>) {
@@ -43,9 +48,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     }
 
     fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, playerInfoClickListener: PlayerInfoClickListener) {
-        playerDao.insert(convertPlayerFormToPlayerObject(playerInfoForm))
-            .observeOn(scheduleProvider.mainThread())
-            .subscribeOn(scheduleProvider.backgroundThread())
+        playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object: BaseCompletableObserver() {
             override fun onComplete() {
@@ -60,9 +63,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     }
 
     fun removePlayer(playerToRemove: PlayerViewModel) {
-        playerDao.delete(convertPlayerViewModelToPlayerModel(playerToRemove))
-            .observeOn(scheduleProvider.mainThread())
-            .subscribeOn(scheduleProvider.backgroundThread())
+        playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object : BaseCompletableObserver() {
 
@@ -74,9 +75,7 @@ class RosterViewModel(private val playerDao: PlayerDao, private val scheduleProv
     }
 
     fun loadPlayerDetails(playerId: Int) {
-        playerDao.findPlayerById(playerId)
-            .observeOn(scheduleProvider.mainThread())
-            .subscribeOn(scheduleProvider.backgroundThread())
+        playerRepo.getPlayerDetails(playerId)
             .subscribe(object : BaseObserver<PlayerModel>() {
                 override fun onNext(result: PlayerModel) {
                     progressBarVisibility.postValue(View.GONE)

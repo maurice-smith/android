@@ -9,38 +9,35 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kingmo.example.teamroster.R
-import com.kingmo.example.teamroster.RosterApplication
-import com.kingmo.example.teamroster.database.RosterAppDatabase
 import com.kingmo.example.teamroster.databinding.MainFragmentBinding
-import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
 import com.kingmo.example.teamroster.view.adapters.AdapterItemViewModel
 import com.kingmo.example.teamroster.view.adapters.ItemClickListener
 import com.kingmo.example.teamroster.view.adapters.PlayersRecyclerAdapter
-import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
 import com.kingmo.example.teamroster.viewmodels.PlayerViewModel
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var rosterViewModel: RosterViewModel
-    private lateinit var rosterDb: RosterAppDatabase
+    private val rosterViewModel: RosterViewModel by viewModels()
+    //private lateinit var rosterDb: RosterAppDatabase
     private lateinit var playersRecyclerAdapter: PlayersRecyclerAdapter
     private lateinit var fragBinding: MainFragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rosterDb = (activity?.applicationContext as RosterApplication).getAppDataBase()
-        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
-        rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
+        //rosterDb = (activity?.applicationContext as RosterApplication).getAppDataBase()
+        //val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
+        //rosterViewModel = ViewModelProvider(this, appViewModelFactory).get(RosterViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,7 +56,7 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
         playersRecyclerAdapter = PlayersRecyclerAdapter(mutableListOf(), this)
         rosterList.adapter = playersRecyclerAdapter
 
-        rosterViewModel.playersLiveData.observe(this, Observer {
+        rosterViewModel.playersLiveData.observe(viewLifecycleOwner, {
             (rosterList.adapter as PlayersRecyclerAdapter).updateViewModels(it)
         })
 
@@ -79,10 +76,10 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
 
     override fun removeItem(itemViewModel: AdapterItemViewModel) {
         val playerViewModel: PlayerViewModel = itemViewModel as PlayerViewModel
-        val successDialog: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+        val successDialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         successDialog.setCancelable(false)
             .setMessage(resources.getString(R.string.delete_player_confirmation_msg, playerViewModel.getFirstName(), playerViewModel.getLastName()))
-            .setPositiveButton(R.string.yes) { dialog, which ->  rosterViewModel.removePlayer(playerViewModel) }
+            .setPositiveButton(R.string.yes) { _, _ ->  rosterViewModel.removePlayer(playerViewModel) }
             .setNegativeButton(R.string.no, null)
             .show()
     }

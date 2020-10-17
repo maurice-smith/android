@@ -2,21 +2,18 @@ package com.kingmo.example.teamroster.view
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.kingmo.example.teamroster.R
-import com.kingmo.example.teamroster.RosterApplication
-import com.kingmo.example.teamroster.database.RosterAppDatabase
 import com.kingmo.example.teamroster.databinding.ActivityPlayerDetailsBinding
-import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
-import com.kingmo.example.teamroster.viewmodels.AppViewModelFactory
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlayerDetailsActivity : AppCompatActivity() {
-    private lateinit var rosterViewModel: RosterViewModel
-    private lateinit var rosterDb: RosterAppDatabase
+    private val rosterViewModel: RosterViewModel by viewModels()
+    //private lateinit var rosterDb: RosterAppDatabase
     private lateinit var detailsBinding: ActivityPlayerDetailsBinding
 
     companion object {
@@ -35,9 +32,9 @@ class PlayerDetailsActivity : AppCompatActivity() {
 
         Log.d(TAG, "Started with Player_id: $inComingPlayerId")
 
-        rosterDb = (applicationContext as RosterApplication).getAppDataBase()
-        val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
-        rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
+        //rosterDb = (applicationContext as RosterApplication).getAppDataBase()
+        //val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
+        //rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
 
         detailsBinding.rosterViewModel = rosterViewModel
 
