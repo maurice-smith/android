@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.mo.jetpack.hiltdemo.viewmodel.PersonInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -14,6 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class SecondFragment : Fragment() {
+
+    private val personInfoViewModel: PersonInfoViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +31,9 @@ class SecondFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val infoTextView = view.findViewById<TextView>(R.id.textview_second)
+        personInfoViewModel.getPersonalInfo().observe(viewLifecycleOwner, Observer { infoTextView.text = it })
 
         view.findViewById<Button>(R.id.button_second).setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
