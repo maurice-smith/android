@@ -2,8 +2,10 @@ package com.kingmo.example.teamroster.viewmodels
 
 import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.kingmo.example.teamroster.database.PlayerModel
+import androidx.lifecycle.SavedStateHandle
 import com.kingmo.example.teamroster.database.PlayerDao
+import com.kingmo.example.teamroster.database.PlayerModel
+import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
@@ -27,16 +29,16 @@ class RosterViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var playerDao: PlayerDao
+    private lateinit var playerInfoClickListener: PlayerInfoClickListener
 
     @Mock
-    private lateinit var playerInfoClickListener: PlayerInfoClickListener
+    private lateinit var playerDao: PlayerDao
 
     private lateinit var viewModel: RosterViewModel
 
     @Before
     fun setUp() {
-        viewModel = RosterViewModel(playerDao, TestSchedulerProvider())
+        viewModel = RosterViewModel(PlayerRepo(playerDao, TestSchedulerProvider()), SavedStateHandle())
     }
 
     @Test
@@ -51,9 +53,9 @@ class RosterViewModelTest {
         assertEquals(View.VISIBLE, viewModel.playerRosterVisibility.value)
 
         assertTrue(playerList!!.isNotEmpty())
-        assertEquals(123, playerList.get(0).getPlayerId())
-        assertEquals("Paul", playerList.get(0).getFirstName())
-        assertEquals("Wall", playerList.get(0).getLastName())
+        assertEquals(123, playerList.first().getPlayerId())
+        assertEquals("Paul", playerList.first().getFirstName())
+        assertEquals("Wall", playerList.first().getLastName())
 
         verify(playerDao).getPlayers()
     }
@@ -119,7 +121,7 @@ class RosterViewModelTest {
         assertEquals("ERROR", errorViewModel?.message)
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
-        verifyZeroInteractions(playerInfoClickListener)
+        verifyNoInteractions(playerInfoClickListener)
         verify(playerDao).insert(PlayerModel())
     }
 
@@ -146,5 +148,4 @@ class RosterViewModelTest {
 
         verify(playerDao).delete(PlayerModel())
     }
-
 }

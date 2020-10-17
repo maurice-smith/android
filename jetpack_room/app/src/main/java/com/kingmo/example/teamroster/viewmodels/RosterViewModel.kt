@@ -6,17 +6,15 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
 import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
-import com.kingmo.example.teamroster.utils.schedulers.AppScheduleProvider
-import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
 import com.kingmo.example.teamroster.view.PlayerInfoClickListener
 
-class RosterViewModel @ViewModelInject constructor(private val playerRepo: PlayerRepo, @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class RosterViewModel @ViewModelInject constructor(private val playerRepo: PlayerRepo,
+                                                   @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val errorViewModel: MutableLiveData<ErrorViewModel> = MutableLiveData(ErrorViewModel())
