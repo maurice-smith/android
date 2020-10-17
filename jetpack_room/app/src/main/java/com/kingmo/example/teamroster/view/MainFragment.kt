@@ -29,16 +29,8 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
     }
 
     private val rosterViewModel: RosterViewModel by viewModels()
-    //private lateinit var rosterDb: RosterAppDatabase
     private lateinit var playersRecyclerAdapter: PlayersRecyclerAdapter
     private lateinit var fragBinding: MainFragmentBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //rosterDb = (activity?.applicationContext as RosterApplication).getAppDataBase()
-        //val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
-        //rosterViewModel = ViewModelProvider(this, appViewModelFactory).get(RosterViewModel::class.java)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         fragBinding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)

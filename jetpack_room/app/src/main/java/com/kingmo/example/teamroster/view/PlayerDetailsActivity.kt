@@ -13,7 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlayerDetailsActivity : AppCompatActivity() {
     private val rosterViewModel: RosterViewModel by viewModels()
-    //private lateinit var rosterDb: RosterAppDatabase
     private lateinit var detailsBinding: ActivityPlayerDetailsBinding
 
     companion object {
@@ -32,15 +31,7 @@ class PlayerDetailsActivity : AppCompatActivity() {
 
         Log.d(TAG, "Started with Player_id: $inComingPlayerId")
 
-        //rosterDb = (applicationContext as RosterApplication).getAppDataBase()
-        //val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
-        //rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
-
         detailsBinding.rosterViewModel = rosterViewModel
-
-        //rosterViewModel.playerDetails.observe(this, Observer { detailsBinding.playerViewModel = it })
-
         rosterViewModel.loadPlayerDetails(inComingPlayerId)
-
     }
 }

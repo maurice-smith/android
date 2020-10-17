@@ -25,15 +25,9 @@ class PlayerActivity : AppCompatActivity(), PlayerInfoClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityBinding = DataBindingUtil.setContentView(this,
-            R.layout.activity_add_player
-        )
+        activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_player)
         activityBinding.lifecycleOwner = this
         setContentView(activityBinding.root)
-
-        //rosterDb = (applicationContext as RosterApplication).getAppDataBase()
-        //val appViewModelFactory = AppViewModelFactory(rosterDb.getPlayerDao(), AppScheduleProvider())
-        //rosterViewModel = ViewModelProviders.of(this, appViewModelFactory).get(RosterViewModel::class.java)
 
         activityBinding.playerFormViewModel = PlayerInfoFormViewModel()
         activityBinding.addHandler = AddPlayerHandler(this)
