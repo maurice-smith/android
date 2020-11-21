@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.mo.jetpack.navigation.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_contentFragment"
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/contentFragment"
         android:name="com.mo.jetpack.navigation.ContentFragment"
-        android:label="{Content Fragment}"
+        android:label="Content Fragment"
         tools:layout="@layout/fragment_content">
         <argument
             android:name="contentModel"

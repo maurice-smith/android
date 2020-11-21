@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.mo.jetpack.navigation.databinding.FragmentContentBinding
+import com.mo.jetpack.navigation.models.ContentModel
 
 class ContentFragment : Fragment() {
     private val navigationArgs: ContentFragmentArgs by navArgs()
@@ -23,6 +24,10 @@ class ContentFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewBinding.contentViewModel = navigationArgs.contentModel
+        if (navigationArgs.contentModel != null) {
+            viewBinding.contentViewModel = navigationArgs.contentModel
+        } else {
+            viewBinding.contentViewModel = ContentModel("Default Content", "Default body", "None")
+        }
     }
 }

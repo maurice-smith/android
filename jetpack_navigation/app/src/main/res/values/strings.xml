@@ -7,4 +7,7 @@
     <string name="content_button_txt">Click for Content</string>
     <string name="content_title">My Nav Project</string>
     <string name="content_body">Ldmsdlf fsfa;f adfndsosfn.f sfnsofnslfns.fsnf.s snfsflsfs.f snflfns</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="nav_item_1">Content Info</string>
 </resources>
