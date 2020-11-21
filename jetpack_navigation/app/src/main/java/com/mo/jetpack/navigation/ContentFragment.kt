@@ -1,8 +1,6 @@
 package com.mo.jetpack.navigation
 
-
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +24,5 @@ class ContentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewBinding.contentViewModel = navigationArgs.contentModel
-    }
-
-    companion object {
-        val TAG = ContentFragment::class.java.simpleName
-        @JvmStatic
-        fun newInstance() = ContentFragment()
     }
 }
