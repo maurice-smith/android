@@ -5,7 +5,8 @@
     <string name="jersey_format">Wearing #: %1$s</string>
     <string name="roster_title">West Side Walkers</string>
     <string name="add_player_txt">Add Player</string>
-    <string name="no_players_found_msg">NO PLAYERS FOUND. CLICK ADD PLAYERS.</string>
+    <string name="no_players_found_msg">NO PLAYERS FOUND.</string>
+    <string name="add_players">Add Players</string>
     <string name="enter_player_info">Enter Player Info</string>
     <string name="first_name_hint">Enter Fist Name</string>
     <string name="last_name_hint">Enter Last Name</string>
@@ -19,4 +20,6 @@
     <string name="player_add_success_msg">Player added to Roster!</string>
     <string name="title_activity_player_details">Player Profile</string>
     <string name="title_activity_add_player">Create Player Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

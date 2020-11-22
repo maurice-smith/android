@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/app_nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav_graph"
+    app:startDestination="@id/mainFragment">
 
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.kingmo.example.teamroster.view.fragment.MainFragment"
+        android:label="Roster List"
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/action_mainFragment_to_noResultsFragment"
+            app:destination="@id/noResultsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_placeholder"
+            app:destination="@id/addPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noResultsFragment"
+        android:name="com.kingmo.example.teamroster.view.fragment.NoResultsFragment"
+        android:label="No Players Found"
+        tools:layout="@layout/fragment_no_results" />
+
+    <fragment android:id="@+id/addPlayerFragment"
+        android:name="com.kingmo.example.teamroster.view.fragment.AddPlayerFragment"
+        android:label="Add Player"
+        tools:layout="@layout/fragment_add_player">
+        <action
+            android:id="@+id/action_addPlayerFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
 </navigation>

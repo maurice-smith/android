@@ -1,5 +1,5 @@
 
-package com.kingmo.example.teamroster.view
+package com.kingmo.example.teamroster.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.databinding.MainFragmentBinding
+import com.kingmo.example.teamroster.view.PlayerActivity
+import com.kingmo.example.teamroster.view.PlayerDetailsActivity
+import com.kingmo.example.teamroster.view.RosterClickListener
+import com.kingmo.example.teamroster.view.RosterHandler
 import com.kingmo.example.teamroster.view.adapters.AdapterItemViewModel
 import com.kingmo.example.teamroster.view.adapters.ItemClickListener
 import com.kingmo.example.teamroster.view.adapters.PlayersRecyclerAdapter
