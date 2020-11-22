@@ -11,7 +11,8 @@ import com.kingmo.example.teamroster.models.BaseCompletableObserver
 import com.kingmo.example.teamroster.models.BaseObserver
 import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
-import com.kingmo.example.teamroster.view.PlayerInfoClickListener
+import com.kingmo.example.teamroster.view.AddPlayerListener
+import com.kingmo.example.teamroster.view.RosterListener
 
 class RosterViewModel @ViewModelInject constructor(private val playerRepo: PlayerRepo,
                                                    @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -45,13 +46,11 @@ class RosterViewModel @ViewModelInject constructor(private val playerRepo: Playe
         })
     }
 
-    fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, playerInfoClickListener: PlayerInfoClickListener) {
+    fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, addPlayerListener: AddPlayerListener) {
         playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object: BaseCompletableObserver() {
-            override fun onComplete() {
-                playerInfoClickListener.onPlayerAddedSuccess()
-            }
+            override fun onComplete() = addPlayerListener.onPlayerAddedSuccess()
 
             override fun onError(error: Throwable) {
                 progressBarVisibility.postValue(View.GONE)
@@ -60,10 +59,11 @@ class RosterViewModel @ViewModelInject constructor(private val playerRepo: Playe
         })
     }
 
-    fun removePlayer(playerToRemove: PlayerViewModel) {
+    fun removePlayer(playerToRemove: PlayerViewModel, rosterListener: RosterListener) {
         playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
             .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
             .subscribe(object : BaseCompletableObserver() {
+                override fun onComplete() = rosterListener.onRemovePlayerSuccess()
 
                 override fun onError(error: Throwable) {
                     progressBarVisibility.postValue(View.GONE)

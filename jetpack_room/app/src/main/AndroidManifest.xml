@@ -9,15 +9,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".view.StartActivity"></activity>
-        <activity
-            android:name=".view.PlayerDetailsActivity"
-            android:label="@string/title_activity_player_details" />
-        <activity
-            android:name=".view.PlayerActivity"
-            android:label="@string/title_activity_add_player" />
-        <activity android:name=".view.MainActivity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".view.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

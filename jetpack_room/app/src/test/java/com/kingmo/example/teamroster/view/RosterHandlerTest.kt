@@ -11,18 +11,18 @@ import org.mockito.junit.MockitoJUnitRunner
 class RosterHandlerTest {
 
     @Mock
-    lateinit var clickListener: RosterClickListener
+    lateinit var rosterListener: RosterListener
 
     private lateinit var rosterHandler: RosterHandler
 
     @Before
     fun setUp() {
-        rosterHandler = RosterHandler(clickListener)
+        rosterHandler = RosterHandler(rosterListener)
     }
 
     @Test
     fun shouldInvokeGoToAddPlayerScreen() {
         rosterHandler.goToAddPlayerScreen()
-        verify(clickListener).onAddPlayerClick()
+        verify(rosterListener).goToAddScreen()
     }
 }

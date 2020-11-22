@@ -13,13 +13,13 @@ import androidx.navigation.fragment.findNavController
 import com.kingmo.example.teamroster.R
 import com.kingmo.example.teamroster.databinding.FragmentAddPlayerBinding
 import com.kingmo.example.teamroster.view.AddPlayerHandler
-import com.kingmo.example.teamroster.view.PlayerInfoClickListener
+import com.kingmo.example.teamroster.view.AddPlayerListener
 import com.kingmo.example.teamroster.viewmodels.PlayerInfoFormViewModel
 import com.kingmo.example.teamroster.viewmodels.RosterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddPlayerFragment : Fragment(), PlayerInfoClickListener {
+class AddPlayerFragment : Fragment(), AddPlayerListener {
     private val rosterViewModel: RosterViewModel by viewModels()
     private lateinit var viewBinding: FragmentAddPlayerBinding
     private var playerFormViewModel: PlayerInfoFormViewModel? = null
@@ -40,18 +40,18 @@ class AddPlayerFragment : Fragment(), PlayerInfoClickListener {
         viewBinding.playerFormViewModel = playerFormViewModel
     }
 
-    override fun onAddPlayer() {
+    override fun onPlayerAddedSuccess() {
+        Toast.makeText(context, R.string.player_add_success_msg, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(AddPlayerFragmentDirections.actionAddPlayerFragmentToMainFragment())
+    }
+
+    override fun onAddPlayerClick()  {
         val playerFormViewModel: PlayerInfoFormViewModel? = viewBinding.playerFormViewModel
         if (playerFormViewModel != null) {
             rosterViewModel.addPlayer(playerFormViewModel, this)
         } else {
             Log.e(TAG, "ERROR playerFormViewModel is null. no op.")
         }
-    }
-
-    override fun onPlayerAddedSuccess() {
-        Toast.makeText(context, R.string.player_add_success_msg, Toast.LENGTH_SHORT).show()
-        findNavController().navigate(AddPlayerFragmentDirections.actionAddPlayerFragmentToMainFragment())
     }
 
     companion object {

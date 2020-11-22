@@ -9,7 +9,8 @@ import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import com.kingmo.example.teamroster.utils.schedulers.TestSchedulerProvider
-import com.kingmo.example.teamroster.view.PlayerInfoClickListener
+import com.kingmo.example.teamroster.view.AddPlayerListener
+import com.kingmo.example.teamroster.view.RosterListener
 import io.reactivex.Completable
 import io.reactivex.Observable
 import org.junit.Assert.*
@@ -29,7 +30,10 @@ class RosterViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var playerInfoClickListener: PlayerInfoClickListener
+    private lateinit var addPlayerListener: AddPlayerListener
+
+    @Mock
+    private lateinit var rosterListener: RosterListener
 
     @Mock
     private lateinit var playerDao: PlayerDao
@@ -105,9 +109,9 @@ class RosterViewModelTest {
     fun shouldAddPlayerOnSuccess() {
         `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.complete())
 
-        viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
+        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
 
-        verify(playerInfoClickListener).onPlayerAddedSuccess()
+        verify(addPlayerListener).onPlayerAddedSuccess()
         verify(playerDao).insert(PlayerModel())
     }
 
@@ -115,13 +119,13 @@ class RosterViewModelTest {
     fun shouldShowAddPlayerError() {
         `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.error(Exception("ERROR")))
 
-        viewModel.addPlayer(PlayerInfoFormViewModel(), playerInfoClickListener)
+        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
 
         val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
         assertEquals("ERROR", errorViewModel?.message)
         assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
 
-        verifyNoInteractions(playerInfoClickListener)
+        verifyNoInteractions(addPlayerListener)
         verify(playerDao).insert(PlayerModel())
     }
 
@@ -130,9 +134,10 @@ class RosterViewModelTest {
         val playerToRemove = PlayerModel()
         `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.complete())
 
-        viewModel.removePlayer(PlayerViewModel(playerToRemove))
+        viewModel.removePlayer(PlayerViewModel(playerToRemove), rosterListener)
 
         verify(playerDao).delete(PlayerModel())
+        verify(rosterListener).onRemovePlayerSuccess()
     }
 
     @Test
@@ -140,7 +145,7 @@ class RosterViewModelTest {
         val playerToRemove = PlayerModel()
         `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.error(Exception("ERROR1")))
 
-        viewModel.removePlayer(PlayerViewModel(playerToRemove))
+        viewModel.removePlayer(PlayerViewModel(playerToRemove), rosterListener)
 
         val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
         assertEquals("ERROR1", errorViewModel?.message)
