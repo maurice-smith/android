@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph"
+    app:startDestination="@id/profile_item">
+
+    <fragment android:id="@+id/profile_item"
+        android:label="@string/profile"
+        android:name="com.mo.jetpack.navigation.bottomnav.fragments.ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+
+    <fragment android:id="@+id/search_item"
+        android:label="@string/search_item"
+        android:name="com.mo.jetpack.navigation.bottomnav.fragments.SearchFragment"
+        tools:layout="@layout/fragment_search"/>
+</navigation>

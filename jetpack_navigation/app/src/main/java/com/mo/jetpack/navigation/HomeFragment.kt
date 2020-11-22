@@ -25,5 +25,9 @@ class HomeFragment : Fragment() {
                 "Mike Jones"))
             it.findNavController().navigate(contentAction)
         }
+
+        bottom_nav_button.setOnClickListener {
+            it.findNavController().navigate(R.id.bottomNavFlow)
+        }
     }
 }
