@@ -14,14 +14,23 @@
             android:id="@+id/action_mainFragment_to_noResultsFragment"
             app:destination="@id/noResultsFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_placeholder"
+            android:id="@+id/action_mainFragment_to_addPlayerFragment"
             app:destination="@id/addPlayerFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_playerDetialsFragment"
+            app:destination="@id/playerDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/noResultsFragment"
         android:name="com.kingmo.example.teamroster.view.fragment.NoResultsFragment"
         android:label="No Players Found"
-        tools:layout="@layout/fragment_no_results" />
+        tools:layout="@layout/fragment_no_results" >
+        <action
+            android:id="@+id/action_noResultsFragment_to_addPlayerFragment"
+            app:destination="@id/addPlayerFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment android:id="@+id/addPlayerFragment"
         android:name="com.kingmo.example.teamroster.view.fragment.AddPlayerFragment"
@@ -30,6 +39,22 @@
         <action
             android:id="@+id/action_addPlayerFragment_to_mainFragment"
             app:destination="@id/mainFragment"
-            app:popUpTo="@id/mainFragment" />
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerDetailsFragment"
+        android:name="com.kingmo.example.teamroster.view.fragment.PlayerDetailsFragment"
+        android:label="Player Details"
+        tools:layout="@layout/fragment_player_details" >
+        <argument
+            android:name="player_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_playerDetailsFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

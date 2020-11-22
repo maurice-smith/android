@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kingmo.example.teamroster.R
@@ -60,7 +61,7 @@ class MainFragment : Fragment(), RosterClickListener, ItemClickListener {
     }
 
     override fun onAddPlayerClick() {
-        startActivity(Intent(activity, PlayerActivity::class.java))
+        findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddPlayerFragment())
     }
 
     override fun doItemAction(itemViewModel: AdapterItemViewModel) {
