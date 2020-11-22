@@ -14,19 +14,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val drawerToggle = ActionBarDrawerToggle(this, drawer_layout, R.string.open, R.string.close)
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
 
-        toolbar.setupWithNavController(navController, drawer_layout)
-
-        nav_view.setupWithNavController(navController)
+        toolbar.setupWithNavController(navHostFragment.navController, drawer_layout)
+        nav_view.setupWithNavController(navHostFragment.navController)
     }
 
     override fun onBackPressed() {
