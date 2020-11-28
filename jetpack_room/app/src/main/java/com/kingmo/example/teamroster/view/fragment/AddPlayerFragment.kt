@@ -24,17 +24,13 @@ class AddPlayerFragment : Fragment(), AddPlayerListener {
     private lateinit var viewBinding: FragmentAddPlayerBinding
     private var playerFormViewModel: PlayerInfoFormViewModel? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_player, container, false)
         viewBinding.lifecycleOwner = this
         return viewBinding.root;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewBinding.addHandler = AddPlayerHandler(this)
         playerFormViewModel = PlayerInfoFormViewModel()
         viewBinding.playerFormViewModel = playerFormViewModel
@@ -47,15 +43,6 @@ class AddPlayerFragment : Fragment(), AddPlayerListener {
 
     override fun onAddPlayerClick()  {
         val playerFormViewModel: PlayerInfoFormViewModel? = viewBinding.playerFormViewModel
-        if (playerFormViewModel != null) {
-            rosterViewModel.addPlayer(playerFormViewModel, this)
-        } else {
-            Log.e(TAG, "ERROR playerFormViewModel is null. no op.")
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        val TAG: String = AddPlayerFragment::class.java.simpleName
+        playerFormViewModel?.let { rosterViewModel.addPlayer(it, this) }
     }
 }

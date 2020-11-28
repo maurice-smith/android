@@ -16,6 +16,7 @@ class StartActivity : AppCompatActivity() {
         setSupportActionBar(app_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHost
+        //navHostFragment.navController.setGraph(R.id.app_nav_graph, )
         setupActionBarWithNavController(navHostFragment.navController)
     }
 }

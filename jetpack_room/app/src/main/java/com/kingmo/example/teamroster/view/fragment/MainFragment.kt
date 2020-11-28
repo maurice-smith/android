@@ -35,8 +35,7 @@ class MainFragment : Fragment(), RosterListener, ItemClickListener {
         return fragBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fragBinding.rosterHandler = RosterHandler(this)
         fragBinding.rosterViewModel = rosterViewModel
 
@@ -46,7 +45,11 @@ class MainFragment : Fragment(), RosterListener, ItemClickListener {
         rosterList.adapter = playersRecyclerAdapter
 
         rosterViewModel.playersLiveData.observe(viewLifecycleOwner, {
-            (rosterList.adapter as PlayersRecyclerAdapter).updateViewModels(it)
+            if (it.isEmpty()) {
+                findNavController().navigate(MainFragmentDirections.actionMainFragmentToNoResultsFragment())
+            } else {
+                (rosterList.adapter as PlayersRecyclerAdapter).updateViewModels(it)
+            }
         })
 
         rosterViewModel.loadPlayers()

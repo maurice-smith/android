@@ -34,6 +34,7 @@ class RosterViewModel @ViewModelInject constructor(private val playerRepo: Playe
                     playerRosterVisibility.postValue(View.VISIBLE)
                     noPlayersFoundVisibility.postValue(View.GONE)
                 } else {
+                    playersLiveData.postValue(emptyList())
                     playerRosterVisibility.postValue(View.GONE)
                     noPlayersFoundVisibility.postValue(View.VISIBLE)
                 }
