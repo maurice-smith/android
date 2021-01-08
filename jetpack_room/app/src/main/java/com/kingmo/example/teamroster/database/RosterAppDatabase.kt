@@ -7,14 +7,24 @@ import androidx.room.RoomDatabase
 
 @Database(entities = arrayOf(PlayerModel::class), version = 1, exportSchema = true)
 abstract class RosterAppDatabase: RoomDatabase() {
-    abstract fun getPlayerDao(): PlayerDao
+    abstract val playerDao: PlayerDao
 
     companion object {
-        fun getInstance(context: Context): RosterAppDatabase {
-            val database = Room.databaseBuilder(context.applicationContext,
-                RosterAppDatabase::class.java, "rosterDb").build()
+        @Volatile
+        private var INSTANCE: RosterAppDatabase? = null
 
-            return database
+        fun getInstance(context: Context): RosterAppDatabase {
+            synchronized(this) {
+                var instance = INSTANCE
+
+                if (instance == null) {
+                    instance = Room.databaseBuilder(context.applicationContext,
+                        RosterAppDatabase::class.java, "rosterDb").build()
+                    INSTANCE = instance
+                }
+
+                return instance
+            }
         }
     }
 }

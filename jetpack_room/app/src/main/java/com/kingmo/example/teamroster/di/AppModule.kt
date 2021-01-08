@@ -25,7 +25,7 @@ object AppModule {
 
     @Provides
     fun providesPlayerRepo(@ApplicationContext context: Context): PlayerRepo {
-        return PlayerRepo(provideRosterDatabase(context).getPlayerDao(), provideSchedulerProvider())
+        return PlayerRepo(provideRosterDatabase(context).playerDao, provideSchedulerProvider())
     }
 
     @Provides
