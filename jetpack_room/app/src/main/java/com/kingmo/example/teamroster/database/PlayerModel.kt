@@ -1,9 +1,11 @@
 package com.kingmo.example.teamroster.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.kingmo.example.teamroster.utils.EMPTY_STRING
 import io.reactivex.Completable
 import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 
 //https://via.placeholder.com/150.png/FF0000/000000?text=Profile+Image
 
@@ -21,17 +23,17 @@ data class PlayerModel(
 @Dao
 interface PlayerDao {
     @Query("SELECT * FROM players")
-    fun getPlayers(): Observable<List<PlayerModel>>
+    suspend fun getPlayers(): List<PlayerModel>
 
     @Query("SELECT * FROM players WHERE player_id = :playerId LIMIT 1")
-    fun findPlayerById(playerId: Int): Observable<PlayerModel>
+    suspend fun findPlayerById(playerId: Int): PlayerModel?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg playerModel: PlayerModel): Completable
+    suspend fun insert(vararg playerModel: PlayerModel)
 
     @Update
-    fun updatePlayers(vararg playerModels: PlayerModel)
+    suspend fun updatePlayers(vararg playerModels: PlayerModel)
 
     @Delete
-    fun delete(user: PlayerModel): Completable
+    suspend fun delete(user: PlayerModel)
 }

@@ -6,15 +6,18 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kingmo.example.teamroster.database.PlayerModel
-import com.kingmo.example.teamroster.models.BaseCompletableObserver
-import com.kingmo.example.teamroster.models.BaseObserver
+import com.kingmo.example.teamroster.models.Response
 import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
+import com.kingmo.example.teamroster.utils.getViewModelScope
 import com.kingmo.example.teamroster.view.AddPlayerListener
 import com.kingmo.example.teamroster.view.RosterListener
+import kotlinx.coroutines.*
 
-class RosterViewModel @ViewModelInject constructor(private val playerRepo: PlayerRepo,
+class RosterViewModel @ViewModelInject constructor(private val coroutineScope: CoroutineScope? = null,
+                                                   private val playerRepo: PlayerRepo,
                                                    @Assisted private val savedStateHandle: SavedStateHandle) : ViewModel() {
     val noPlayersFoundVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerRosterVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
@@ -22,72 +25,60 @@ class RosterViewModel @ViewModelInject constructor(private val playerRepo: Playe
     val playersLiveData: MutableLiveData<List<PlayerViewModel>> = MutableLiveData()
     val progressBarVisibility: MutableLiveData<Int> = MutableLiveData(View.GONE)
     val playerDetails: MutableLiveData<PlayerViewModel> = MutableLiveData()
+    private val viewModelCoroutineScope = getViewModelScope(coroutineScope)
 
     fun loadPlayers() {
-        playerRepo.getPlayers()
-            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
-            .subscribe(object : BaseObserver<List<PlayerModel>>() {
-            override fun onNext(result: List<PlayerModel>) {
-                progressBarVisibility.postValue(View.GONE)
-                if (result.isNotEmpty()) {
-                    playersLiveData.postValue(result.map { PlayerViewModel(it) })
+        viewModelCoroutineScope.launch {
+
+            val players = playerRepo.getPlayersAsync().await()
+            when(players.status) {
+                Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
+                Response.Status.SUCCESS -> {
+                    progressBarVisibility.postValue(View.GONE)
+                    playersLiveData.postValue(players.data?.map { PlayerViewModel(it) })
                     playerRosterVisibility.postValue(View.VISIBLE)
                     noPlayersFoundVisibility.postValue(View.GONE)
-                } else {
+                }
+                Response.Status.ERROR -> {
                     playersLiveData.postValue(emptyList())
                     playerRosterVisibility.postValue(View.GONE)
                     noPlayersFoundVisibility.postValue(View.VISIBLE)
                 }
             }
-
-            override fun onError(error: Throwable) {
-                progressBarVisibility.postValue(View.GONE)
-                errorViewModel.postValue(getErrorViewModel(error))
-            }
-        })
+        }
     }
 
     fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, addPlayerListener: AddPlayerListener) {
-        playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
-            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
-            .subscribe(object: BaseCompletableObserver() {
-            override fun onComplete() = addPlayerListener.onPlayerAddedSuccess()
-
-            override fun onError(error: Throwable) {
-                progressBarVisibility.postValue(View.GONE)
-                errorViewModel.postValue(getErrorViewModel(error))
-            }
-        })
+        viewModelCoroutineScope.launch {
+            playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
+            addPlayerListener.onPlayerAddedSuccess()
+        }
     }
 
     fun removePlayer(playerToRemove: PlayerViewModel, rosterListener: RosterListener) {
-        playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
-            .doOnSubscribe {progressBarVisibility.postValue(View.VISIBLE)}
-            .subscribe(object : BaseCompletableObserver() {
-                override fun onComplete() = rosterListener.onRemovePlayerSuccess()
-
-                override fun onError(error: Throwable) {
-                    progressBarVisibility.postValue(View.GONE)
-                    errorViewModel.postValue(getErrorViewModel(error))
-                }
-            })
+        viewModelCoroutineScope.launch {
+            playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
+            loadPlayers()
+        }
     }
 
     fun loadPlayerDetails(playerId: Int) {
-        playerRepo.getPlayerDetails(playerId)
-            .subscribe(object : BaseObserver<PlayerModel>() {
-                override fun onNext(result: PlayerModel) {
+        viewModelCoroutineScope.launch {
+            val playerDetail = playerRepo.getPlayerDetailsAsync(playerId).await()
+            when (playerDetail.status) {
+                Response.Status.SUCCESS -> {
                     progressBarVisibility.postValue(View.GONE)
                     playerRosterVisibility.postValue(View.VISIBLE)
-                    val playerViewModelResult = PlayerViewModel(result)
+                    val playerViewModelResult = PlayerViewModel(playerDetail.data!!)
                     playerDetails.postValue(playerViewModelResult)
                 }
-
-                override fun onError(error: Throwable) {
+                Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
+                Response.Status.ERROR -> {
                     progressBarVisibility.postValue(View.GONE)
-                    errorViewModel.postValue(getErrorViewModel(error))
+                    errorViewModel.postValue(getErrorViewModel(Throwable("No Player Found.")))
                 }
-            })
+            }
+        }
     }
 
     private fun convertPlayerViewModelToPlayerModel(playerViewModel: PlayerViewModel): PlayerModel = PlayerModel(

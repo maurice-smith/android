@@ -2,25 +2,52 @@ package com.kingmo.example.teamroster.repository
 
 import com.kingmo.example.teamroster.database.PlayerDao
 import com.kingmo.example.teamroster.database.PlayerModel
-import com.kingmo.example.teamroster.utils.schedulers.SchedulerProvider
-import io.reactivex.Completable
-import io.reactivex.Observable
+import com.kingmo.example.teamroster.models.Response
+import com.kingmo.example.teamroster.utils.coroutines.CoroutineContextProvider
 import javax.inject.Inject
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class PlayerRepo @Inject constructor(private val playerDao: PlayerDao, private val scheduleProvider: SchedulerProvider) {
-    fun getPlayers(): Observable<List<PlayerModel>> = playerDao.getPlayers()
-        .observeOn(scheduleProvider.mainThread())
-        .subscribeOn(scheduleProvider.backgroundThread())
+class PlayerRepo @Inject constructor(private val playerDao: PlayerDao, private val coroutineContextProvider: CoroutineContextProvider? = null) {
 
-    fun insertPlayer(vararg playerModel: PlayerModel): Completable = playerDao.insert(*playerModel)
-        .observeOn(scheduleProvider.mainThread())
-        .subscribeOn(scheduleProvider.backgroundThread())
+    suspend fun getPlayersAsync(): Deferred<Response<List<PlayerModel>>> {
+        var output: CompletableDeferred<Response<List<PlayerModel>>> = CompletableDeferred(Response.loading())
+        withContext(getCoroutineContext()) {
+            val playerTask = async { playerDao.getPlayers() }
+            val playerList = playerTask.await()
 
-    fun getPlayerDetails(playerId: Int): Observable<PlayerModel> = playerDao.findPlayerById(playerId)
-        .observeOn(scheduleProvider.mainThread())
-        .subscribeOn(scheduleProvider.backgroundThread())
+            output = if (playerList.isEmpty()) {
+                CompletableDeferred(Response.error())
+            } else {
+                CompletableDeferred(Response.success(playerList))
 
-    fun deletePlayer(user: PlayerModel): Completable = playerDao.delete(user)
-        .observeOn(scheduleProvider.mainThread())
-        .subscribeOn(scheduleProvider.backgroundThread())
+            }
+        }
+        return output
+    }
+
+    suspend fun insertPlayer(vararg playerModel: PlayerModel) = withContext(Dispatchers.IO) {
+        playerDao.insert(*playerModel)
+    }
+
+    suspend fun getPlayerDetailsAsync(playerId: Int): Deferred<Response<PlayerModel?>> {
+        var playerDeferred: CompletableDeferred<Response<PlayerModel?>> = CompletableDeferred(Response.loading())
+        withContext(getCoroutineContext()) {
+            val playerTask = async { playerDao.findPlayerById(playerId) }
+            val playerModel = playerTask.await()
+
+            playerDeferred = if (playerModel == null) {
+                CompletableDeferred(Response.error())
+            } else {
+                CompletableDeferred(Response.success(playerModel))
+            }
+        }
+        return playerDeferred
+    }
+
+    suspend fun deletePlayer(user: PlayerModel) = withContext(getCoroutineContext()) {
+        playerDao.delete(user)
+    }
+
+    private fun getCoroutineContext(): CoroutineContext = coroutineContextProvider?.IO ?: Dispatchers.IO
 }
