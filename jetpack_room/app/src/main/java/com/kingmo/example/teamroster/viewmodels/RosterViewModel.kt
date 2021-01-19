@@ -6,7 +6,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.models.Response
 import com.kingmo.example.teamroster.repository.PlayerRepo
