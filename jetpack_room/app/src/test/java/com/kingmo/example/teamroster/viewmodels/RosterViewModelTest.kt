@@ -8,12 +8,11 @@ import com.kingmo.example.teamroster.models.Response
 import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.TestCoroutineContextProvider
 import com.kingmo.example.teamroster.view.AddPlayerListener
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verifyBlocking
-import kotlinx.coroutines.CompletableDeferred
+import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -27,9 +26,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
-/*
-* TODO: figure out how to unit test coroutines: how to mock deps that have suspended functions.
-*/
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class RosterViewModelTest {
@@ -41,7 +37,7 @@ class RosterViewModelTest {
     private lateinit var addPlayerListener: AddPlayerListener
 
     private var playerRepoSuccessStub = mock<PlayerRepo> {
-        onBlocking { getPlayersAsync() } doReturn CompletableDeferred(Response.success(listOf(PlayerModel(playerId = 123, firstName = "Paul", lastName = "Wall"))))
+        onBlocking { getPlayersFlow() } doReturn flowOf(Response.success(listOf(PlayerModel(playerId = 123, firstName = "Paul", lastName = "Wall"))))
     }
 
     private lateinit var viewModel: RosterViewModel
@@ -87,7 +83,7 @@ class RosterViewModelTest {
     @Test
     fun shouldNotLoadPlayersWhenErrorOccurs() {
         playerRepoSuccessStub = mock {
-            onBlocking { getPlayersAsync() } doReturn CompletableDeferred(Response.error())
+            onBlocking { getPlayersFlow() } doReturn flowOf(Response.error())
         }
         setupRosterViewModel(playerRepoSuccessStub)
         viewModel.loadPlayers()
@@ -101,15 +97,15 @@ class RosterViewModelTest {
     @Test
     fun shouldAddPlayerOnSuccess() {
         playerRepoSuccessStub = mock {
-            onBlocking { insertPlayer() }
+            onBlocking { insertPlayer(PlayerModel()) } doReturn flow { emit(Unit) }
         }
-
 
         setupRosterViewModel(playerRepoSuccessStub)
         viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
         testCoroutineContextProvider.testCoroutineDispatcher.advanceUntilIdle()
 
-        verifyBlocking(playerRepoSuccessStub) { insertPlayer() }
+        verifyBlocking(playerRepoSuccessStub) { insertPlayer(anyVararg()) }
+        verify(addPlayerListener).onPlayerAddedSuccess()
     }
 
 //    @Test

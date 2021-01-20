@@ -73,7 +73,7 @@ class MainFragment : Fragment(), RosterListener, ItemClickListener {
         val successDialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         successDialog.setCancelable(false)
             .setMessage(resources.getString(R.string.delete_player_confirmation_msg, playerViewModel.getFirstName(), playerViewModel.getLastName()))
-            .setPositiveButton(R.string.yes) { _, _ ->  rosterViewModel.removePlayer(playerViewModel, this@MainFragment) }
+            .setPositiveButton(R.string.yes) { _, _ ->  rosterViewModel.removePlayer(playerViewModel) }
             .setNegativeButton(R.string.no, null)
             .show()
     }

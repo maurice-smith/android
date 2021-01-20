@@ -45,4 +45,9 @@ class AddPlayerFragment : Fragment(), AddPlayerListener {
         val playerFormViewModel: PlayerInfoFormViewModel? = viewBinding.playerFormViewModel
         playerFormViewModel?.let { rosterViewModel.addPlayer(it, this) }
     }
+
+    override fun onPlayerAddError() {
+        //TODO: show message in UI via viewModel LiveData
+        Toast.makeText(requireActivity(), "Error! Player not Added. Try Again", Toast.LENGTH_LONG).show()
+    }
 }

@@ -14,6 +14,9 @@ import com.kingmo.example.teamroster.utils.getViewModelScope
 import com.kingmo.example.teamroster.view.AddPlayerListener
 import com.kingmo.example.teamroster.view.RosterListener
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 
 class RosterViewModel @ViewModelInject constructor(private val coroutineScope: CoroutineScope? = null,
                                                    private val playerRepo: PlayerRepo,
@@ -28,20 +31,21 @@ class RosterViewModel @ViewModelInject constructor(private val coroutineScope: C
 
     fun loadPlayers() {
         viewModelCoroutineScope.launch {
-
-            val players = playerRepo.getPlayersAsync().await()
-            when(players.status) {
-                Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
-                Response.Status.SUCCESS -> {
-                    progressBarVisibility.postValue(View.GONE)
-                    playersLiveData.postValue(players.data?.map { PlayerViewModel(it) })
-                    playerRosterVisibility.postValue(View.VISIBLE)
-                    noPlayersFoundVisibility.postValue(View.GONE)
-                }
-                Response.Status.ERROR -> {
-                    playersLiveData.postValue(emptyList())
-                    playerRosterVisibility.postValue(View.GONE)
-                    noPlayersFoundVisibility.postValue(View.VISIBLE)
+            val playersFlow = playerRepo.getPlayersFlow()
+            playersFlow.collect { response ->
+                when(response.status) {
+                    Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
+                    Response.Status.SUCCESS -> {
+                        progressBarVisibility.postValue(View.GONE)
+                        playersLiveData.postValue(response.data?.map { PlayerViewModel(it) })
+                        playerRosterVisibility.postValue(View.VISIBLE)
+                        noPlayersFoundVisibility.postValue(View.GONE)
+                    }
+                    Response.Status.ERROR -> {
+                        playersLiveData.postValue(emptyList())
+                        playerRosterVisibility.postValue(View.GONE)
+                        noPlayersFoundVisibility.postValue(View.VISIBLE)
+                    }
                 }
             }
         }
@@ -49,32 +53,36 @@ class RosterViewModel @ViewModelInject constructor(private val coroutineScope: C
 
     fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, addPlayerListener: AddPlayerListener) {
         viewModelCoroutineScope.launch {
-            playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
-            addPlayerListener.onPlayerAddedSuccess()
+            val insertFlow = playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
+            insertFlow.onCompletion { addPlayerListener.onPlayerAddedSuccess() }
+                .catch {  }
+                .collect()
         }
     }
 
-    fun removePlayer(playerToRemove: PlayerViewModel, rosterListener: RosterListener) {
+    fun removePlayer(playerToRemove: PlayerViewModel) {
         viewModelCoroutineScope.launch {
-            playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
-            loadPlayers()
+            val removeFlow = playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
+            removeFlow.onCompletion { loadPlayers() }.collect()
         }
     }
 
     fun loadPlayerDetails(playerId: Int) {
         viewModelCoroutineScope.launch {
-            val playerDetail = playerRepo.getPlayerDetailsAsync(playerId).await()
-            when (playerDetail.status) {
-                Response.Status.SUCCESS -> {
-                    progressBarVisibility.postValue(View.GONE)
-                    playerRosterVisibility.postValue(View.VISIBLE)
-                    val playerViewModelResult = PlayerViewModel(playerDetail.data!!)
-                    playerDetails.postValue(playerViewModelResult)
-                }
-                Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
-                Response.Status.ERROR -> {
-                    progressBarVisibility.postValue(View.GONE)
-                    errorViewModel.postValue(getErrorViewModel(Throwable("No Player Found.")))
+            val playerDetailFlow = playerRepo.getPlayerDetailsFlow(playerId)
+            playerDetailFlow.collect {
+                when (it.status) {
+                    Response.Status.SUCCESS -> {
+                        progressBarVisibility.postValue(View.GONE)
+                        playerRosterVisibility.postValue(View.VISIBLE)
+                        val playerViewModelResult = PlayerViewModel(it.data!!)
+                        playerDetails.postValue(playerViewModelResult)
+                    }
+                    Response.Status.LOADING -> progressBarVisibility.postValue(View.VISIBLE)
+                    Response.Status.ERROR -> {
+                        progressBarVisibility.postValue(View.GONE)
+                        errorViewModel.postValue(getErrorViewModel(Throwable("No Player Found.")))
+                    }
                 }
             }
         }

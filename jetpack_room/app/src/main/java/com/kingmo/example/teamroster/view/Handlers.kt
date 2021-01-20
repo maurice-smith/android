@@ -9,6 +9,7 @@ interface RosterListener {
 interface AddPlayerListener {
     fun onAddPlayerClick()
     fun onPlayerAddedSuccess()
+    fun onPlayerAddError()
 }
 
 class RosterHandler(private val rosterListener: RosterListener) {
