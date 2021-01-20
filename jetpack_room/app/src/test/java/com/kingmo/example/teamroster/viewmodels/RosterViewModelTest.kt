@@ -7,8 +7,10 @@ import com.kingmo.example.teamroster.database.PlayerModel
 import com.kingmo.example.teamroster.models.Response
 import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.TestCoroutineContextProvider
+import com.kingmo.example.teamroster.view.AddPlayerListener
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verifyBlocking
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,11 +18,13 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 /*
@@ -33,15 +37,8 @@ class RosterViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-//    @Mock
-//    private lateinit var addPlayerListener: AddPlayerListener
-
-//    @Mock
-//    private lateinit var rosterListener: RosterListener
-
-//    @Mock
-//    private lateinit var playerDao: PlayerDao
-
+    @Mock
+    private lateinit var addPlayerListener: AddPlayerListener
 
     private var playerRepoSuccessStub = mock<PlayerRepo> {
         onBlocking { getPlayersAsync() } doReturn CompletableDeferred(Response.success(listOf(PlayerModel(playerId = 123, firstName = "Paul", lastName = "Wall"))))
@@ -101,17 +98,20 @@ class RosterViewModelTest {
         assertEquals(View.GONE, viewModel.playerRosterVisibility.value)
     }
 
+    @Test
+    fun shouldAddPlayerOnSuccess() {
+        playerRepoSuccessStub = mock {
+            onBlocking { insertPlayer() }
+        }
 
-//    @Test
-//    fun shouldAddPlayerOnSuccess() {
-//        `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.complete())
-//
-//        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
-//
-//        verify(addPlayerListener).onPlayerAddedSuccess()
-//        verify(playerDao).insert(PlayerModel())
-//    }
-//
+
+        setupRosterViewModel(playerRepoSuccessStub)
+        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
+        testCoroutineContextProvider.testCoroutineDispatcher.advanceUntilIdle()
+
+        verifyBlocking(playerRepoSuccessStub) { insertPlayer() }
+    }
+
 //    @Test
 //    fun shouldShowAddPlayerError() {
 //        `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.error(Exception("ERROR")))
@@ -124,30 +124,5 @@ class RosterViewModelTest {
 //
 //        verifyNoInteractions(addPlayerListener)
 //        verify(playerDao).insert(PlayerModel())
-//    }
-//
-//    @Test
-//    fun shouldRemovePlayerSuccess() {
-//        val playerToRemove = PlayerModel()
-//        `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.complete())
-//
-//        viewModel.removePlayer(PlayerViewModel(playerToRemove), rosterListener)
-//
-//        verify(playerDao).delete(PlayerModel())
-//        verify(rosterListener).onRemovePlayerSuccess()
-//    }
-//
-//    @Test
-//    fun shouldRemovePlayerError() {
-//        val playerToRemove = PlayerModel()
-//        `when`(playerDao.delete(playerToRemove)).thenReturn(Completable.error(Exception("ERROR1")))
-//
-//        viewModel.removePlayer(PlayerViewModel(playerToRemove), rosterListener)
-//
-//        val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
-//        assertEquals("ERROR1", errorViewModel?.message)
-//        assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
-//
-//        verify(playerDao).delete(PlayerModel())
 //    }
 }
