@@ -39,13 +39,14 @@ class PlayerRepo @Inject constructor(private val playerDao: PlayerDao, private v
         }.flowOn(getCoroutineContext())
     }
 
-    suspend fun insertPlayer(vararg playerModel: PlayerModel): Flow<Response<Unit?>> =
-        flow {
+    suspend fun insertPlayer(vararg playerModel: PlayerModel): Flow<Response<Unit?>> {
+        return flow {
             playerDao.insert(*playerModel)
             emit(Response.success(null))
         }.catch {
             emit(Response.error())
         }.flowOn(getCoroutineContext())
+    }
 
     suspend fun getPlayerDetailsFlow(playerId: Int): Flow<Response<PlayerModel?>> {
         return flowOf(playerDao.findPlayerById(playerId))
@@ -69,7 +70,12 @@ class PlayerRepo @Inject constructor(private val playerDao: PlayerDao, private v
         return playerDeferred
     }
 
-    suspend fun deletePlayer(user: PlayerModel) = flowOf(playerDao.delete(user)).flowOn(getCoroutineContext())
+    suspend fun deletePlayer(user: PlayerModel): Flow<Response<Unit?>> {
+        return flow {
+            playerDao.delete(user)
+            emit(Response.success(null))
+        }.catch { emit(Response.error()) }.flowOn(getCoroutineContext())
+    }
 
     private fun getCoroutineContext(): CoroutineContext = coroutineContextProvider?.IO ?: Dispatchers.IO
 }

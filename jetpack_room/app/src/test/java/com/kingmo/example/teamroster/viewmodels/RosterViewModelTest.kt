@@ -11,7 +11,6 @@ import com.kingmo.example.teamroster.view.AddPlayerListener
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
@@ -120,5 +119,34 @@ class RosterViewModelTest {
 
         verifyBlocking(playerRepoSuccessStub) { insertPlayer(anyVararg()) }
         verify(addPlayerListener).onPlayerAddError()
+    }
+
+    @Test
+    fun shouldRemovePlayerSuccess() {
+        val removePlayerRepoStub: PlayerRepo = mock {
+            onBlocking { getPlayersFlow() } doReturn flowOf(Response.success(emptyList()))
+            onBlocking { deletePlayer(PlayerModel()) } doReturn flowOf(Response.success(null))
+        }
+
+        setupRosterViewModel(removePlayerRepoStub)
+        viewModel.removePlayer(PlayerViewModel(PlayerModel()))
+        testCoroutineContextProvider.testCoroutineDispatcher.advanceUntilIdle()
+
+        verifyBlocking(removePlayerRepoStub) { getPlayersFlow() }
+        verifyBlocking(removePlayerRepoStub) { deletePlayer(any()) }
+    }
+
+    @Test
+    fun shouldRemovePlayerError() {
+        val removePlayerRepoStub: PlayerRepo = mock {
+            onBlocking { deletePlayer(PlayerModel()) } doReturn flowOf(Response.error())
+        }
+
+        setupRosterViewModel(removePlayerRepoStub)
+        viewModel.removePlayer(PlayerViewModel(PlayerModel()))
+        testCoroutineContextProvider.testCoroutineDispatcher.advanceUntilIdle()
+
+        verifyBlocking(removePlayerRepoStub) { deletePlayer(any()) }
+        verifyNoMoreInteractions(removePlayerRepoStub)
     }
 }

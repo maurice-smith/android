@@ -12,11 +12,9 @@ import com.kingmo.example.teamroster.repository.PlayerRepo
 import com.kingmo.example.teamroster.utils.DEFAULT_ERROR_MSG
 import com.kingmo.example.teamroster.utils.getViewModelScope
 import com.kingmo.example.teamroster.view.AddPlayerListener
-import com.kingmo.example.teamroster.view.RosterListener
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.launch
 
 class RosterViewModel @ViewModelInject constructor(private val coroutineScope: CoroutineScope? = null,
                                                    private val playerRepo: PlayerRepo,
@@ -66,7 +64,12 @@ class RosterViewModel @ViewModelInject constructor(private val coroutineScope: C
     fun removePlayer(playerToRemove: PlayerViewModel) {
         viewModelCoroutineScope.launch {
             val removeFlow = playerRepo.deletePlayer(convertPlayerViewModelToPlayerModel(playerToRemove))
-            removeFlow.onCompletion { loadPlayers() }.collect()
+            removeFlow.collect {
+                when (it.status) {
+                    Response.Status.SUCCESS -> loadPlayers()
+                    else -> {}
+                }
+            }
         }
     }
 
