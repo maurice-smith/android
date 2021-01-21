@@ -54,9 +54,12 @@ class RosterViewModel @ViewModelInject constructor(private val coroutineScope: C
     fun addPlayer(playerInfoForm: PlayerInfoFormViewModel, addPlayerListener: AddPlayerListener) {
         viewModelCoroutineScope.launch {
             val insertFlow = playerRepo.insertPlayer(convertPlayerFormToPlayerObject(playerInfoForm))
-            insertFlow.onCompletion { addPlayerListener.onPlayerAddedSuccess() }
-                .catch {  }
-                .collect()
+            insertFlow.collect {
+                when (it.status) {
+                    Response.Status.SUCCESS -> addPlayerListener.onPlayerAddedSuccess()
+                    else -> addPlayerListener.onPlayerAddError()
+                }
+            }
         }
     }
 

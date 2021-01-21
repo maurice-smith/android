@@ -39,8 +39,13 @@ class PlayerRepo @Inject constructor(private val playerDao: PlayerDao, private v
         }.flowOn(getCoroutineContext())
     }
 
-    suspend fun insertPlayer(vararg playerModel: PlayerModel): Flow<Unit> =
-        flowOf(playerDao.insert(*playerModel)).flowOn(getCoroutineContext())
+    suspend fun insertPlayer(vararg playerModel: PlayerModel): Flow<Response<Unit?>> =
+        flow {
+            playerDao.insert(*playerModel)
+            emit(Response.success(null))
+        }.catch {
+            emit(Response.error())
+        }.flowOn(getCoroutineContext())
 
     suspend fun getPlayerDetailsFlow(playerId: Int): Flow<Response<PlayerModel?>> {
         return flowOf(playerDao.findPlayerById(playerId))

@@ -97,7 +97,7 @@ class RosterViewModelTest {
     @Test
     fun shouldAddPlayerOnSuccess() {
         playerRepoSuccessStub = mock {
-            onBlocking { insertPlayer(PlayerModel()) } doReturn flow { emit(Unit) }
+            onBlocking { insertPlayer(PlayerModel()) } doReturn flowOf(Response.success(null))
         }
 
         setupRosterViewModel(playerRepoSuccessStub)
@@ -108,17 +108,17 @@ class RosterViewModelTest {
         verify(addPlayerListener).onPlayerAddedSuccess()
     }
 
-//    @Test
-//    fun shouldShowAddPlayerError() {
-//        `when`(playerDao.insert(PlayerModel())).thenReturn(Completable.error(Exception("ERROR")))
-//
-//        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
-//
-//        val errorViewModel: ErrorViewModel? = viewModel.errorViewModel.value
-//        assertEquals("ERROR", errorViewModel?.message)
-//        assertEquals(View.VISIBLE, errorViewModel?.errorVisibility)
-//
-//        verifyNoInteractions(addPlayerListener)
-//        verify(playerDao).insert(PlayerModel())
-//    }
+    @Test
+    fun shouldShowAddPlayerError() {
+        playerRepoSuccessStub = mock {
+            onBlocking { insertPlayer(PlayerModel()) } doReturn flowOf(Response.error())
+        }
+
+        setupRosterViewModel(playerRepoSuccessStub)
+        viewModel.addPlayer(PlayerInfoFormViewModel(), addPlayerListener)
+        testCoroutineContextProvider.testCoroutineDispatcher.advanceUntilIdle()
+
+        verifyBlocking(playerRepoSuccessStub) { insertPlayer(anyVararg()) }
+        verify(addPlayerListener).onPlayerAddError()
+    }
 }
