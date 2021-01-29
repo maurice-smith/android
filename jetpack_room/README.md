@@ -8,5 +8,5 @@ This example app uses the following frameworks and components:
 - Room DB
 - ViewModel
 - LiveData
-- Unit tests: JUnit w/ Mockito
-- RxJava/ RxAndroid
+- Unit tests: JUnit w/ Mockito & Kotlin-Mockito
+- Kotlin Coroutines
