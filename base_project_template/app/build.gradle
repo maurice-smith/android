@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId "com.kingdom"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.activity:activity-ktx:1.2.3'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidx_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidx_lifecycle_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertJ_version"
+    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_testing_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
+    testImplementation "org.mockito:mockito-android:$mockito_android_version"
+
+    testImplementation "com.squareup.retrofit2:retrofit-mock:$retrofit_mock_version"
+    testImplementation "androidx.navigation:navigation-testing:$nav_version"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0'
+
+    androidTestImplementation "org.assertj:assertj-core:$assertJ_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_test_ext_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
+    androidTestImplementation "androidx.test:core:$androidx_test_core_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_core_version"
+    androidTestImplementation "androidx.test.espresso:espresso-web:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$junit_test_ext_version"
+    androidTestImplementation "androidx.test:rules:$androidx_test_rules_version"
+}
