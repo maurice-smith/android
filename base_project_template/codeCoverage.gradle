@@ -1,0 +1,149 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+ext {
+    instructionThreshold = 0.1
+    branchThreshold = 0.1
+    lineThreshold = 0.1
+    complexityThreshold = 0.1
+    methodThreshold = 0.1
+}
+
+def excludesFilter = [
+        '**/R.class',
+        '**/BR.*',
+        '**/*BR*.*',
+        '**/R$*.class',
+        '**/Manifest*.*',
+        'android/**/*.*',
+        '**/BuildConfig.*',
+        '**/*$ViewBinder*.*',
+        '**/*$ViewInjector*.*',
+        '**/Lambda$*.class',
+        '**/Lambda.class',
+        '**/*Lambda.class',
+        '**/*Lambda*.class',
+        '**/*$Lambda$*.*',
+        '**/*Activity*.*',
+        '**/*Fragment*.*',
+        '**/*View*.*',
+        'android/databinding/**/*.class',
+        '**/android/databinding/*Binding.class',
+        '**/android/databinding/*',
+        '**/androidx/databinding/*',
+        '**/*Test*.*'
+]
+
+project.afterEvaluate {
+    def buildTypes = android.buildTypes.collect { type -> type.name }
+    def productFlavors = android.productFlavors.collect { flavor -> flavor.name }
+
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+            def sourceName, sourcePath
+            if (!productFlavorName) {
+                sourceName = sourcePath = "${buildTypeName}"
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
+            }
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+
+            task "${testTaskName}Coverage" (type:JacocoReport, dependsOn: "$testTaskName") {
+                group = "Reporting"
+                description = "Generate Unit test code coverage reports on the ${sourceName.capitalize()} build."
+
+
+                classDirectories.setFrom(fileTree(
+                        dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
+                        excludes: excludesFilter
+                ) + fileTree(
+                        dir: "${project.buildDir}/tmp/kotlin-classes/${sourceName}",
+                        excludes: excludesFilter
+                ))
+
+                def coverageSourceDirs = [
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
+                ]
+
+                additionalSourceDirs.setFrom(coverageSourceDirs)
+                sourceDirectories.setFrom(coverageSourceDirs)
+                executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
+
+
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                }
+            }
+
+            task "${testTaskName}CheckCoverage" (type:JacocoCoverageVerification, dependsOn: "${testTaskName}Coverage") {
+                group = "Verification"
+                description = "Verify Code Coverage metrics on ${sourceName.capitalize()} build."
+
+                violationRules {
+                    rule {
+                        limit {
+                            counter = 'INSTRUCTION'
+                            minimum = project.ext.instructionThreshold
+                        }
+                    }
+
+                    rule {
+                        limit {
+                            counter = 'BRANCH'
+                            minimum = project.ext.branchThreshold
+                        }
+                    }
+
+                    rule {
+                        limit {
+                            counter = 'LINE'
+                            minimum = project.ext.lineThreshold
+                        }
+                    }
+
+                    rule {
+                        limit {
+                            counter = 'COMPLEXITY'
+                            minimum = project.ext.complexityThreshold
+                        }
+                    }
+
+                    rule {
+                        limit {
+                            counter = 'METHOD'
+                            minimum = project.ext.methodThreshold
+                        }
+                    }
+                }
+
+                classDirectories.setFrom(fileTree(
+                        dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
+                        excludes: excludesFilter
+                ) + fileTree(
+                        dir: "${project.buildDir}/tmp/kotlin-classes/${sourceName}",
+                        excludes: excludesFilter
+                ))
+
+                def coverageSourceDirs = [
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
+                ]
+
+                additionalSourceDirs.setFrom(coverageSourceDirs)
+                sourceDirectories.setFrom(coverageSourceDirs)
+                executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
+            }
+        }
+    }
+}
