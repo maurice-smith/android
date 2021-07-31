@@ -9,6 +9,19 @@ plugins {
 
 apply from: "$rootDir/codeCoverage.gradle"
 
+// Create a variable called debugKeystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def debugKeystorePropertiesFile = rootProject.file("$rootDir/keystores/debug_bundle_keystore.properties")
+def releaseKeystorePropertiesFile = rootProject.file("$rootDir/keystores/release_bundle_keystore.properties")
+
+// Initialize a new Properties() object called debugKeystoreProperties.
+def debugKeystoreProperties = new Properties()
+def releaseKeystoreProperties = new Properties()
+
+// Load your keystore.properties file into the debugKeystoreProperties object.
+debugKeystoreProperties.load(new FileInputStream(debugKeystorePropertiesFile))
+releaseKeystoreProperties.load(new FileInputStream(releaseKeystorePropertiesFile))
+
 android {
     compileSdkVersion 30
     defaultConfig {
@@ -21,15 +34,61 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        config {
+            keyAlias debugKeystoreProperties['keyAlias']
+            keyPassword debugKeystoreProperties['keyPassword']
+            storeFile file(debugKeystoreProperties['storeFile'])
+            storePassword debugKeystoreProperties['storePassword']
+        }
+
+        release {
+            keyAlias releaseKeystoreProperties['keyAlias']
+            keyPassword releaseKeystoreProperties['keyPassword']
+            storeFile file(releaseKeystoreProperties['storeFile'])
+            storePassword releaseKeystoreProperties['storePassword']
+        }
+    }
+
+    defaultConfig {
+        applicationId = "com.kingdom"
+        manifestPlaceholders = [appName:"Template"]
+        signingConfig signingConfigs.debug
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
+            signingConfig signingConfigs.debug
         }
 
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Specifies one flavor dimension.
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            manifestPlaceholders = [appName:"Template${versionNameSuffix}"]
+        }
+
+        qa {
+            dimension "version"
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
+            manifestPlaceholders = [appName:"Template${versionNameSuffix}"]
+        }
+
+        prod {
+            dimension "version"
         }
     }
 
@@ -38,7 +97,7 @@ android {
             jacoco {
                 includeNoLocationClasses = true
             }
-            includeAndroidResources = true
+            //includeAndroidResources = true
         }
         animationsDisabled true
     }
