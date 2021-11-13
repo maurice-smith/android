@@ -34,4 +34,34 @@ class ErrorViewModelTest {
         errorViewModel.message = "Error"
         assertEquals("Error", errorViewModel.message)
     }
+
+    @Test
+    fun shouldReturnIndexOfSum() {
+        val intArray = arrayOf(2,7,11,15)
+        val targetSum = 9
+        val outputIndexList = HashSet<Int>()
+        val expectedIndexList = HashSet<Int>(listOf(0,1))
+
+        for (index in intArray.indices) {
+            for (j in 1 until intArray.size) {
+                if ( intArray[index] + intArray[j] == targetSum) {
+                    outputIndexList.add(index)
+                    outputIndexList.add(j)
+                    break;
+                }
+            }
+        }
+
+//        for (int i = 0; i < intArray.lenght -1;i++) {in
+//            for (int j = 1; j <= intArray.lenght - 1;j++) {
+//                if (intArray[i] + intArray[j] == targetSum) {
+//                    outputSet.add(i)
+//                    outputSet.add(j)
+        //break
+//                }
+//        }
+//        }
+
+        assertEquals(expectedIndexList, outputIndexList)
+    }
 }
